@@ -24,7 +24,7 @@ public class Form_KhuyenMaiBanHang extends javax.swing.JFrame {
         txtTimKiemKM = new javax.swing.JTextField();
         btnTimKiemKM = new javax.swing.JButton();
 
-        pnlCapNhat.setBackground(new java.awt.Color(255, 255, 204));
+        pnlCapNhat.setBackground(new java.awt.Color(204, 255, 255));
         pnlCapNhat.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
@@ -91,7 +91,7 @@ public class Form_KhuyenMaiBanHang extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnTimKiemKM, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1001, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlCapNhatLayout.setVerticalGroup(
             pnlCapNhatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

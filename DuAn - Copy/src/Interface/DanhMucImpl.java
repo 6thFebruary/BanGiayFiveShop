@@ -2,12 +2,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Repo;
+package Interface;
+
+import Model.DanhMuc;
+import Repo.DanhMucRepository;
+import java.util.ArrayList;
 
 /**
  *
- * @author Windows
+ * @author ADMIN
  */
-public class ChatLieuRepo {
-    
+public interface DanhMucImpl {
+    public ArrayList<DanhMuc>getAllDanhMuc();
 }

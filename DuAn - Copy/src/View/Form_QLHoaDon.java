@@ -49,6 +49,12 @@ public class Form_QLHoaDon extends javax.swing.JPanel {
 
         jLabel2.setText("Tìm kiếm");
 
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
+
         jLabel3.setText("Ngày bắt đầu");
 
         jLabel4.setText("Ngày kết thúc");
@@ -171,6 +177,10 @@ public class Form_QLHoaDon extends javax.swing.JPanel {
                 .addGap(21, 21, 21))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
