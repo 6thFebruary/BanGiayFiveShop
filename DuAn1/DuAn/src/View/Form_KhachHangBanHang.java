@@ -35,7 +35,7 @@ public class Form_KhachHangBanHang extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         btn_chonmua = new javax.swing.JButton();
 
-        pnlCapNhat.setBackground(new java.awt.Color(255, 255, 204));
+        pnlCapNhat.setBackground(new java.awt.Color(204, 255, 255));
         pnlCapNhat.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         lblTenKH.setText("Tên khách hàng :");

@@ -4,6 +4,13 @@
  */
 package View;
 
+import Model.ChiTietGiay;
+import Repo.HoaDonChoRepository;
+import Service.SanPhamChiTietService;
+import Service.SanPhamService;
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author ADMIN
@@ -13,10 +20,38 @@ public class FormBanHang extends javax.swing.JPanel {
     /**
      * Creates new form FormBanHang
      */
+    SanPhamService sanPhamService = new SanPhamService();
+    SanPhamChiTietService ctgService = new SanPhamChiTietService();
+    ArrayList<ChiTietGiay> listspct = ctgService.getChiTietSanPham();
+    
+
     public FormBanHang() {
         initComponents();
+        loadtable(listspct);
     }
 
+    public void loadtable(ArrayList<ChiTietGiay> ctg) {
+        DefaultTableModel model = (DefaultTableModel) tb_HdSp1.getModel();
+        model.setRowCount(0);
+        for (ChiTietGiay chitietgiay : ctg) {
+            Object[] data = new Object[]{
+                chitietgiay.getId(),
+                chitietgiay.getIdSanPham().getTen(),
+                chitietgiay.getSoLuong(),
+                chitietgiay.getGiaBan(),
+                chitietgiay.getIdDanhMuc().getTen(),
+                chitietgiay.getIdChatLieu().getTen(),
+                chitietgiay.getIdSize().getKichCo(),
+                chitietgiay.getIdNSX().getTen(),
+                chitietgiay.getIdDe().getTen(),
+                chitietgiay.getIdMauSac().getMauSac()
+
+            };
+            model.addRow(data);
+        }
+        listspct = ctg;
+    }
+   
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -672,7 +707,7 @@ public class FormBanHang extends javax.swing.JPanel {
         jPanel_BanHang1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel_BanHang1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jPanel_TableHD1.setBackground(new java.awt.Color(255, 255, 204));
+        jPanel_TableHD1.setBackground(new java.awt.Color(204, 255, 255));
         jPanel_TableHD1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jLabel10.setBackground(new java.awt.Color(255, 153, 102));
@@ -724,7 +759,7 @@ public class FormBanHang extends javax.swing.JPanel {
                 .addGap(27, 27, 27))
         );
 
-        jPanel_GioHang1.setBackground(new java.awt.Color(255, 255, 204));
+        jPanel_GioHang1.setBackground(new java.awt.Color(204, 255, 255));
         jPanel_GioHang1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jLabel19.setBackground(new java.awt.Color(255, 153, 102));
@@ -805,7 +840,7 @@ public class FormBanHang extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
-        jPanel_SanPham1.setBackground(new java.awt.Color(255, 255, 204));
+        jPanel_SanPham1.setBackground(new java.awt.Color(204, 255, 255));
         jPanel_SanPham1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jLabel20.setBackground(new java.awt.Color(255, 153, 102));
@@ -933,7 +968,7 @@ public class FormBanHang extends javax.swing.JPanel {
                 .addComponent(jPanel_SanPham1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel_HoaDon1.setBackground(new java.awt.Color(255, 255, 204));
+        jPanel_HoaDon1.setBackground(new java.awt.Color(204, 255, 255));
         jPanel_HoaDon1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jLabel21.setText("Form Hóa Đơn");
@@ -1215,15 +1250,15 @@ public class FormBanHang extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void tb_hoadonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tb_hoadonMouseClicked
-      
+
     }//GEN-LAST:event_tb_hoadonMouseClicked
 
     private void btn_updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_updateActionPerformed
-      
+
     }//GEN-LAST:event_btn_updateActionPerformed
 
     private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
-      
+
     }//GEN-LAST:event_btn_deleteActionPerformed
 
     private void btn_clearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_clearActionPerformed
@@ -1236,74 +1271,74 @@ public class FormBanHang extends javax.swing.JPanel {
     }//GEN-LAST:event_tb_HdSpMouseClicked
 
     private void btn_prevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_prevActionPerformed
-     
+
     }//GEN-LAST:event_btn_prevActionPerformed
 
     private void btn_nextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_nextActionPerformed
-       
+
     }//GEN-LAST:event_btn_nextActionPerformed
 
     private void btn_timkiemspActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_timkiemspActionPerformed
-     
+
     }//GEN-LAST:event_btn_timkiemspActionPerformed
 
     private void btn_themActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_themActionPerformed
-      
+
     }//GEN-LAST:event_btn_themActionPerformed
 
     private void btn_taoHoaDonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_taoHoaDonActionPerformed
-      
+
     }//GEN-LAST:event_btn_taoHoaDonActionPerformed
 
     private void btn_thanhToanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_thanhToanActionPerformed
 
-       
+
     }//GEN-LAST:event_btn_thanhToanActionPerformed
 
     private void btn_huyHoaDonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_huyHoaDonActionPerformed
-     
+
     }//GEN-LAST:event_btn_huyHoaDonActionPerformed
 
     private void btn_truActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_truActionPerformed
-      
+
     }//GEN-LAST:event_btn_truActionPerformed
 
     private void btn_apDungActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_apDungActionPerformed
-      
+
     }//GEN-LAST:event_btn_apDungActionPerformed
 
     private void btn_huyKMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_huyKMActionPerformed
-      
+
     }//GEN-LAST:event_btn_huyKMActionPerformed
 
     private void btn_huyKHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_huyKHActionPerformed
-       
+
 
     }//GEN-LAST:event_btn_huyKHActionPerformed
 
     private void btn_chonKHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_chonKHActionPerformed
-      
+
     }//GEN-LAST:event_btn_chonKHActionPerformed
 
     private void btn_chonVoucherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_chonVoucherActionPerformed
-     
+
     }//GEN-LAST:event_btn_chonVoucherActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-     
+
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void tb_hoadon1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tb_hoadon1MouseClicked
-   
+
     }//GEN-LAST:event_tb_hoadon1MouseClicked
 
     private void btn_update1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_update1ActionPerformed
-      
+
     }//GEN-LAST:event_btn_update1ActionPerformed
 
     private void btn_delete1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_delete1ActionPerformed
-      
+
     }//GEN-LAST:event_btn_delete1ActionPerformed
 
     private void btn_clear1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_clear1ActionPerformed
@@ -1316,23 +1351,23 @@ public class FormBanHang extends javax.swing.JPanel {
     }//GEN-LAST:event_tb_HdSp1MouseClicked
 
     private void btn_prev1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_prev1ActionPerformed
-      
+
     }//GEN-LAST:event_btn_prev1ActionPerformed
 
     private void btn_next1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_next1ActionPerformed
-    
+
     }//GEN-LAST:event_btn_next1ActionPerformed
 
     private void btn_timkiemsp1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_timkiemsp1ActionPerformed
-     
+
     }//GEN-LAST:event_btn_timkiemsp1ActionPerformed
 
     private void btn_them1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_them1ActionPerformed
-     
+
     }//GEN-LAST:event_btn_them1ActionPerformed
 
     private void btn_taoHoaDon1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_taoHoaDon1ActionPerformed
-      
+
     }//GEN-LAST:event_btn_taoHoaDon1ActionPerformed
 
     private void btn_thanhToan1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_thanhToan1ActionPerformed
@@ -1340,37 +1375,36 @@ public class FormBanHang extends javax.swing.JPanel {
     }//GEN-LAST:event_btn_thanhToan1ActionPerformed
 
     private void btn_huyHoaDon1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_huyHoaDon1ActionPerformed
-     
+
     }//GEN-LAST:event_btn_huyHoaDon1ActionPerformed
 
     private void btn_tru1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_tru1ActionPerformed
         // TODO add your handling code here:
-   
+
     }//GEN-LAST:event_btn_tru1ActionPerformed
 
     private void btn_apDung1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_apDung1ActionPerformed
-     
+
     }//GEN-LAST:event_btn_apDung1ActionPerformed
 
     private void btn_huyKM1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_huyKM1ActionPerformed
-      
+
     }//GEN-LAST:event_btn_huyKM1ActionPerformed
 
     private void btn_huyKH1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_huyKH1ActionPerformed
         // TODO add your handling code here:
-    
+
     }//GEN-LAST:event_btn_huyKH1ActionPerformed
 
     private void btn_chonKH1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_chonKH1ActionPerformed
-      
+
     }//GEN-LAST:event_btn_chonKH1ActionPerformed
 
     private void btn_chonVoucher1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_chonVoucher1ActionPerformed
-      
+
     }//GEN-LAST:event_btn_chonVoucher1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-     
 
 
     }//GEN-LAST:event_jButton2ActionPerformed
