@@ -1,11 +1,10 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package View;
 
 import Model.ChiTietGiay;
-import Model.SanPham;
 import Service.SanPhamChiTietService;
 import Service.SanPhamService;
 import java.util.ArrayList;
@@ -15,22 +14,17 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author ACER
  */
-public class FormChiTiet extends javax.swing.JFrame {
+public class View_SanPhamChiTiet extends javax.swing.JPanel {
 
-    /**
-     * Creates new form FormChiTiet
-     */
-    SanPhamService sanPhamService = new SanPhamService();
+     SanPhamService sanPhamService = new SanPhamService();
     SanPhamChiTietService ctgService = new SanPhamChiTietService();
     ArrayList<ChiTietGiay> listspct = ctgService.getChiTietSanPham();
-
-    public FormChiTiet() {
+    public View_SanPhamChiTiet() {
         initComponents();
         loadtable(listspct);
     }
-
-    public void loadtable(ArrayList<ChiTietGiay> ctg) {
-        DefaultTableModel model = (DefaultTableModel) tblDanhSach.getModel();
+     public void loadtable(ArrayList<ChiTietGiay> ctg) {
+        DefaultTableModel model = (DefaultTableModel) tblDanhSach1.getModel();
         model.setRowCount(0);
         for (ChiTietGiay chitietgiay : ctg) {
             Object[] data = new Object[]{
@@ -99,7 +93,7 @@ public class FormChiTiet extends javax.swing.JFrame {
         rdoTamNgung = new javax.swing.JRadioButton();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tblDanhSach = new javax.swing.JTable();
+        tblDanhSach1 = new javax.swing.JTable();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         btNhoMax = new javax.swing.JButton();
@@ -116,8 +110,6 @@ public class FormChiTiet extends javax.swing.JFrame {
         jButton10 = new javax.swing.JButton();
         jButton11 = new javax.swing.JButton();
         jButton12 = new javax.swing.JButton();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(204, 255, 255));
         jPanel1.setForeground(new java.awt.Color(204, 255, 255));
@@ -237,7 +229,7 @@ public class FormChiTiet extends javax.swing.JFrame {
 
         jLabel4.setText("Chất Liệu");
 
-        tblDanhSach.setModel(new javax.swing.table.DefaultTableModel(
+        tblDanhSach1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null, null, null, null, null},
@@ -251,12 +243,12 @@ public class FormChiTiet extends javax.swing.JFrame {
                 "Id", "Sản Phẩm", "Danh Mục", "Size", "Màu Sắc", "Chất Liệu", "Nhà Sản Xuất", "Đế", "Số Lượng", "Giá", "Mô Tả", "Trạng Thái"
             }
         ));
-        tblDanhSach.addMouseListener(new java.awt.event.MouseAdapter() {
+        tblDanhSach1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tblDanhSachMouseClicked(evt);
+                tblDanhSach1MouseClicked(evt);
             }
         });
-        jScrollPane2.setViewportView(tblDanhSach);
+        jScrollPane2.setViewportView(tblDanhSach1);
 
         jLabel5.setText("Màu Sắc");
 
@@ -582,13 +574,13 @@ public class FormChiTiet extends javax.swing.JFrame {
                     .addGap(285, 285, 285)))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 24, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -597,8 +589,6 @@ public class FormChiTiet extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btNhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNhoActionPerformed
@@ -653,9 +643,9 @@ public class FormChiTiet extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnResetActionPerformed
 
-    private void tblDanhSachMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDanhSachMouseClicked
-//123
-    }//GEN-LAST:event_tblDanhSachMouseClicked
+    private void tblDanhSach1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDanhSach1MouseClicked
+        //123
+    }//GEN-LAST:event_tblDanhSach1MouseClicked
 
     private void btNhoMaxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNhoMaxActionPerformed
 
@@ -677,40 +667,6 @@ public class FormChiTiet extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_lbChatLieu4MouseClicked
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FormChiTiet.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FormChiTiet.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FormChiTiet.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FormChiTiet.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new FormChiTiet().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btLon;
@@ -763,7 +719,7 @@ public class FormChiTiet extends javax.swing.JFrame {
     private javax.swing.JLabel lbTrang;
     private javax.swing.JRadioButton rdoDangBan;
     private javax.swing.JRadioButton rdoTamNgung;
-    private javax.swing.JTable tblDanhSach;
+    private javax.swing.JTable tblDanhSach1;
     private javax.swing.JTextField txtGia;
     private javax.swing.JTextArea txtMoTa;
     private javax.swing.JTextField txtSoLuong;
