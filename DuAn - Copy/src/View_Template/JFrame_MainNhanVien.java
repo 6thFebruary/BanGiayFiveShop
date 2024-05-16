@@ -7,11 +7,11 @@ package View_Template;
 import View.Form_KhachHang;
 
 import View.Form_QLHoaDon;
-import View.View_SanPham;
+import View.Form_SanPham;
 
 import View.Form_TrangChu;
 import View.DangNhap;
-import View.View_BanHang;
+import View.Form_BanHang;
 import event.EventMenuSelected;
 import java.awt.Color;
 import javax.swing.JComponent;
@@ -28,16 +28,16 @@ public class JFrame_MainNhanVien extends javax.swing.JFrame {
         jPanel_Menu1.initMoving(JFrame_MainNhanVien.this);
         // Đặt chế độ đóng cửa sổ
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        setForm(new View_BanHang());
+        setForm(new Form_BanHang());
         jPanel_Menu1.addEventMenuSelected(new EventMenuSelected() {
             @Override
             public void selected(int index) {
                 if (index == 0) {
                     setForm(new Form_TrangChu());
                 } else if (index == 2) {
-                    setForm(new View_BanHang());
+                    setForm(new Form_BanHang());
                 } else if (index == 4) {
-                    setForm(new View_SanPham());
+                    setForm(new Form_SanPham());
                 } else if (index == 8) {
                     setForm(new Form_KhachHang());
                 } else if (index == 10) {
