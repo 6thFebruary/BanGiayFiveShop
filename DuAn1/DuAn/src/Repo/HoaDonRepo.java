@@ -9,9 +9,11 @@ import Model.HoaDon;
 import Model.KhachHang;
 import Model.KhuyenMai;
 import Model.NguoiDung;
-import Utilities.DBConnext;
+import Utils.DBConnext;
 import java.util.ArrayList;
 import java.sql.*;
+import java.time.LocalDate;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,36 +23,15 @@ import java.util.logging.Logger;
  */
 public class HoaDonRepo {
 
-    public static ArrayList<HoaDon> getAllHoaDonCho() {
-        ArrayList<HoaDon> listHD = new ArrayList<>();
-        String sql = "SELECT HOADON.Ma, NGUOIDUNG.Ten AS TenND, KHACHHANG.Ten AS TenKH, KHUYENMAI.Ma AS MaKM, HOADON.NgayTao, HOADON.TrangThai\n"
-                + "FROM HOADON JOIN NGUOIDUNG \n"
-                + "ON HOADON.IdND = NGUOIDUNG.Id\n"
-                + "JOIN KHACHHANG ON HOADON.IdKH = KHACHHANG.Id\n"
-                + "JOIN KHUYENMAI ON HOADON.IdKM = KHUYENMAI.Id";
-        try (Connection conn = DBConnext.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
-            while (rs.next()) {
-                HoaDon hd = new HoaDon();
-                hd.setMa(rs.getString("Ma"));
-                hd.setIdND(rs.getString("TenND"));
-                hd.setIdKH(rs.getString("TenKH"));
-                hd.setIdKM(rs.getString("MaKM"));
-                hd.setNgayTao(rs.getDate("NgayTao"));
-                hd.setTrangThai(rs.getInt("TrangThai"));
-
-                listHD.add(hd);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(HoaDonRepo.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return listHD;
+    public int randomMa() {
+        return 10000 + new Random().nextInt(90000);
     }
 
     public ArrayList getGioHang(String idHD) {
         ArrayList<GioHang> listGH = new ArrayList<>();
         try {
             Connection conn = DBConnext.getConnection();
-            String sql = "  SELECT ctg.Id as ID, sp.Ten as TEN, hdct.SoLuong as SL, cl.Ten as CL, ms.MauSac as MS, nsx.Ten as HANG, s.KichCo as SIZE, hdct.DonGia, hdct.TrangThai\n"
+            String sql = "  SELECT ctg.Id as ID, sp.Ten as TEN, hdct.SoLuong as SL, cl.Ten as CL, ms.MauSac as MS, nsx.Ten as HANG, s.KichCo as SIZE, hdct.DonGia, sp.TrangThai\n"
                     + "  FROM HOADONCHITIET as hdct JOIN CHITIETGIAY as ctg on hdct.IdCTD = ctg.Id\n"
                     + "  JOIN SANPHAM as sp on ctg.IdSanPham = sp.Id JOIN HOADON as hd on hdct.IdHD = hd.Id JOIN CHATLIEU as cl on ctg.IdChatLieu = cl.Id\n"
                     + "  JOIN MAUSAC as ms on ctg.IdMauSac = ms.Id JOIN NSX as nsx on ctg.IdNSX = nsx.Id JOIN SIZE as s on ctg.IdSize = s.Id\n"
@@ -93,4 +74,12 @@ public class HoaDonRepo {
         }
         return idHD;
     }
+    
+//    public String getIdChiTietGiay(String idGH){
+//        try {
+//            Connection conn = DBConnext.getConnection();
+//            String sql = "SELECT Id FROM CHITIETGIAY";
+//        } catch (Exception e) {
+//        }
+//    }
 }

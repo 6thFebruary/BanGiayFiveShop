@@ -4,44 +4,65 @@
  */
 package View;
 
+import Model.ChiTietGiay;
 import Model.GioHang;
 import Model.HoaDon;
+import Model.HoaDonChiTiet;
+import Model.NguoiDung;
+import Repo.HoaDonChoRepo;
 import Repo.HoaDonRepo;
+import Service.SanPhamChiTietService;
+import Service.SanPhamService;
+import java.awt.Dimension;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-
-
 
 /**
  *
  * @author ADMIN
  */
 public class FormBanHang extends javax.swing.JPanel {
+
+    SanPhamService sanPhamService = new SanPhamService();
+    SanPhamChiTietService ctgService = new SanPhamChiTietService();
+    ArrayList<ChiTietGiay> listspct = ctgService.getChiTietSanPham();
     DefaultTableModel model = new DefaultTableModel();
     HoaDonRepo hdRepo = new HoaDonRepo();
+    HoaDon hd = new HoaDon();
+    HoaDonChoRepo hdcRepo = new HoaDonChoRepo();
+
     /**
      * Creates new form FormBanHang
      */
     public FormBanHang() {
         initComponents();
-        getList();
         getGioHang();
+        fillTableHoaDonCho();
+        loadtableSanPham();
     }
-    
-    private void getList() {
+
+    private void fillTableHoaDonCho() {
         model = (DefaultTableModel) tb_hoadon1.getModel();
+        ArrayList<HoaDon> list = hdcRepo.getAllHoaDonCho();
         model.setRowCount(0);
-        for (HoaDon hd : hdRepo.getAllHoaDonCho()) {
+
+        for (HoaDon hd : list) {
+            NguoiDung nd = new NguoiDung();
+            String trangThai = hd.getTrangThai() == 1 ? "Đã Thanh Toán" : "Chưa Thanh Toán";
             model.addRow(new Object[]{
                 hd.getMa(),
-                hd.getIdND(),
-                hd.getIdKH(),
-                hd.getIdKM(),
+                nd.getTenNguoiDung(),
+                hd.getIdKhachHang() == null ? "Khách lẻ" : hd.getIdKhachHang(),
+                hd.getIdKhuyenMai() == null ? "" : hd.getIdKhuyenMai(),
                 hd.getNgayTao(),
-                hd.getTrangThai() == 1 ? "Đã thanh toán" : "Chưa thanh toán"});
+                trangThai
+            });
         }
     }
-    
+
     private void getGioHang() {
         model = (DefaultTableModel) tb_giohang1.getModel();
 
@@ -61,11 +82,45 @@ public class FormBanHang extends javax.swing.JPanel {
                     gioHang.getHang(),
                     gioHang.getSize(),
                     gioHang.getDonGia(),
-                    gioHang.getTrangThai() == 1 ? "Đã thanh toán" : "Chờ thanh toán"
+                    gioHang.getTrangThai() == 1 ? "Đang kinh doanh" : "Ngừng kinh doanh"
                 });
             }
         }
     }
+
+    public void loadtableSanPham() {
+        DefaultTableModel model = (DefaultTableModel) tb_HdSp1.getModel();
+        model.setRowCount(0);
+        for (ChiTietGiay chitietgiay : listspct) {
+            Object[] data = new Object[]{
+                chitietgiay.getId(),
+                chitietgiay.getIdSanPham().getTen(),
+                chitietgiay.getSoLuong(),
+                chitietgiay.getGiaBan(),
+                chitietgiay.getIdDanhMuc().getTen(),
+                chitietgiay.getIdChatLieu().getTen(),
+                chitietgiay.getIdSize().getKichCo(),
+                chitietgiay.getIdNSX().getTen(),
+                chitietgiay.getIdDe().getTen(),
+                chitietgiay.getIdMauSac().getMauSac()
+            };
+            model.addRow(data);
+        }
+    }
+
+    private Boolean checkHDSP() {
+        int rowDSSP = tb_HdSp1.getSelectedRow();
+        int rowHD = tb_hoadon1.getSelectedRow();
+        String idCTSP = tb_HdSp1.getValueAt(rowDSSP, 0).toString();
+        String maHD = tb_hoadon1.getValueAt(rowHD, 0).toString();
+        String idHD = hdRepo.getIdHoaDon(maHD);
+        if (hdcRepo.checkGioHang(idHD, idCTSP) == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -1264,15 +1319,15 @@ public class FormBanHang extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void tb_hoadonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tb_hoadonMouseClicked
-         getGioHang();
+        getGioHang();
     }//GEN-LAST:event_tb_hoadonMouseClicked
 
     private void btn_updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_updateActionPerformed
-      
+
     }//GEN-LAST:event_btn_updateActionPerformed
 
     private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
-      
+
     }//GEN-LAST:event_btn_deleteActionPerformed
 
     private void btn_clearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_clearActionPerformed
@@ -1285,74 +1340,74 @@ public class FormBanHang extends javax.swing.JPanel {
     }//GEN-LAST:event_tb_HdSpMouseClicked
 
     private void btn_prevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_prevActionPerformed
-     
+
     }//GEN-LAST:event_btn_prevActionPerformed
 
     private void btn_nextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_nextActionPerformed
-       
+
     }//GEN-LAST:event_btn_nextActionPerformed
 
     private void btn_timkiemspActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_timkiemspActionPerformed
-     
+
     }//GEN-LAST:event_btn_timkiemspActionPerformed
 
     private void btn_themActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_themActionPerformed
-      
+
     }//GEN-LAST:event_btn_themActionPerformed
 
     private void btn_taoHoaDonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_taoHoaDonActionPerformed
-      
+
     }//GEN-LAST:event_btn_taoHoaDonActionPerformed
 
     private void btn_thanhToanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_thanhToanActionPerformed
 
-       
+
     }//GEN-LAST:event_btn_thanhToanActionPerformed
 
     private void btn_huyHoaDonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_huyHoaDonActionPerformed
-     
+
     }//GEN-LAST:event_btn_huyHoaDonActionPerformed
 
     private void btn_truActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_truActionPerformed
-      
+
     }//GEN-LAST:event_btn_truActionPerformed
 
     private void btn_apDungActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_apDungActionPerformed
-      
+
     }//GEN-LAST:event_btn_apDungActionPerformed
 
     private void btn_huyKMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_huyKMActionPerformed
-      
+
     }//GEN-LAST:event_btn_huyKMActionPerformed
 
     private void btn_huyKHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_huyKHActionPerformed
-       
+
 
     }//GEN-LAST:event_btn_huyKHActionPerformed
 
     private void btn_chonKHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_chonKHActionPerformed
-      
+
     }//GEN-LAST:event_btn_chonKHActionPerformed
 
     private void btn_chonVoucherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_chonVoucherActionPerformed
-     
+
     }//GEN-LAST:event_btn_chonVoucherActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-     
+
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void tb_hoadon1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tb_hoadon1MouseClicked
-   
+
     }//GEN-LAST:event_tb_hoadon1MouseClicked
 
     private void btn_update1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_update1ActionPerformed
-      
+
     }//GEN-LAST:event_btn_update1ActionPerformed
 
     private void btn_delete1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_delete1ActionPerformed
-      
+
     }//GEN-LAST:event_btn_delete1ActionPerformed
 
     private void btn_clear1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_clear1ActionPerformed
@@ -1365,23 +1420,99 @@ public class FormBanHang extends javax.swing.JPanel {
     }//GEN-LAST:event_tb_HdSp1MouseClicked
 
     private void btn_prev1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_prev1ActionPerformed
-      
+
     }//GEN-LAST:event_btn_prev1ActionPerformed
 
     private void btn_next1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_next1ActionPerformed
-    
+
     }//GEN-LAST:event_btn_next1ActionPerformed
 
     private void btn_timkiemsp1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_timkiemsp1ActionPerformed
-     
+
     }//GEN-LAST:event_btn_timkiemsp1ActionPerformed
 
     private void btn_them1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_them1ActionPerformed
-     
+        int rowHDC = tb_hoadon1.getSelectedRow();
+        int rowDSSP = tb_HdSp1.getSelectedRow();
+        int sl = 0;
+        if (rowHDC <= -1) {
+            JOptionPane.showMessageDialog(this, "Bạn phải chọn hóa đơn để thêm sản phẩm");
+            return;
+        }
+        if (rowDSSP <= -1) {
+            JOptionPane.showMessageDialog(this, "Bạn phải chọn sản phẩm trong danh sách để thêm");
+            return;
+        }
+        String slNhap = JOptionPane.showInputDialog(this, "Nhập số lượng sản phẩm");
+        sl = Integer.parseInt(slNhap);
+        if (sl <= 0) {
+            JOptionPane.showMessageDialog(this, "Số lượng phải là số nguyên dương");
+            return;
+        }
+        if (sl > Integer.parseInt(tb_HdSp1.getValueAt(rowDSSP, 2).toString())) {
+            JOptionPane.showMessageDialog(this, "Số lượng trong cửa hàng không đủ");
+            return;
+        }
+
+        HoaDonChiTiet hdct = new HoaDonChiTiet();
+        hdct.setIdHD(hdRepo.getIdHoaDon(tb_hoadon1.getValueAt(rowHDC, 0).toString()));
+        hdct.setIdCTG(tb_HdSp1.getValueAt(rowDSSP, 0).toString());
+
+        Double donGia = Double.parseDouble(tb_HdSp1.getValueAt(rowDSSP, 3).toString());
+        Integer soLuong = new Integer(sl);
+        Double thanhTien = donGia * soLuong;
+        DecimalFormat dF = new DecimalFormat("#,##0.00 VND");
+        String formatThanhTien = dF.format(thanhTien);
+
+        hdct.setDonGia(thanhTien);
+        hdct.setSoLuong(sl);
+
+        if (checkHDSP() == true) {
+            int rowGH = tb_giohang1.getSelectedRow();
+            Integer updateSLSP = Integer.parseInt(tb_giohang1.getValueAt(rowGH, 2).toString()) + sl;
+            hdcRepo.updateSLGH(updateSLSP, tb_giohang1.getValueAt(rowGH, 0).toString());
+            getGioHang();
+            return;
+        } else {
+            Integer updateSLSP = Integer.parseInt(tb_HdSp1.getValueAt(rowDSSP, 2).toString()) - sl;
+            hdcRepo.updateDSSP(updateSLSP, tb_HdSp1.getValueAt(rowDSSP, 0).toString());
+            JOptionPane jo = new JOptionPane(
+                    "Tên sản phẩm: " + tb_HdSp1.getValueAt(rowDSSP, 1)
+                    + "\n"
+                    + "Số lượng: " + sl
+                    + "\n"
+                    + "Thành tiền: " + formatThanhTien,
+                    JOptionPane.QUESTION_MESSAGE,
+                    JOptionPane.YES_OPTION
+            );
+
+            jo.setPreferredSize(new Dimension(400, 200));
+            JDialog dialog = jo.createDialog(this, "Thêm sản phẩm vào giỏ hàng");
+            dialog.setLocationRelativeTo(null);
+            dialog.setVisible(true);
+
+            int result = (int) jo.getValue();
+            if (result == JOptionPane.YES_OPTION) {
+                hdcRepo.addHoaDonChiTiet(hdct);
+                loadtableSanPham();
+                getGioHang();
+            }
+        }
     }//GEN-LAST:event_btn_them1ActionPerformed
 
     private void btn_taoHoaDon1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_taoHoaDon1ActionPerformed
-      
+        ArrayList<HoaDon> list = hdcRepo.getAllHoaDonCho();
+        if (list.size() >= 15) {
+            JOptionPane.showMessageDialog(this, "Số lượng tối đa 5 hóa đơn !");
+            return;
+        } else {
+            hdcRepo.addHoaDonCho();
+        }
+        DefaultTableModel model = (DefaultTableModel) tb_giohang1.getModel();
+        model.setRowCount(0);
+
+        fillTableHoaDonCho();
+        JOptionPane.showMessageDialog(this, "Thêm thành công !");
     }//GEN-LAST:event_btn_taoHoaDon1ActionPerformed
 
     private void btn_thanhToan1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_thanhToan1ActionPerformed
@@ -1389,37 +1520,36 @@ public class FormBanHang extends javax.swing.JPanel {
     }//GEN-LAST:event_btn_thanhToan1ActionPerformed
 
     private void btn_huyHoaDon1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_huyHoaDon1ActionPerformed
-     
+
     }//GEN-LAST:event_btn_huyHoaDon1ActionPerformed
 
     private void btn_tru1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_tru1ActionPerformed
         // TODO add your handling code here:
-   
+
     }//GEN-LAST:event_btn_tru1ActionPerformed
 
     private void btn_apDung1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_apDung1ActionPerformed
-     
+
     }//GEN-LAST:event_btn_apDung1ActionPerformed
 
     private void btn_huyKM1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_huyKM1ActionPerformed
-      
+
     }//GEN-LAST:event_btn_huyKM1ActionPerformed
 
     private void btn_huyKH1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_huyKH1ActionPerformed
         // TODO add your handling code here:
-    
+
     }//GEN-LAST:event_btn_huyKH1ActionPerformed
 
     private void btn_chonKH1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_chonKH1ActionPerformed
-      
+
     }//GEN-LAST:event_btn_chonKH1ActionPerformed
 
     private void btn_chonVoucher1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_chonVoucher1ActionPerformed
-      
+
     }//GEN-LAST:event_btn_chonVoucher1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-     
 
 
     }//GEN-LAST:event_jButton2ActionPerformed

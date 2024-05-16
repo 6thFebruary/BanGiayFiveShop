@@ -11,122 +11,146 @@ import java.util.Date;
  * @author Windows
  */
 public class NguoiDung {
-    private int id;
-    private int idCV;
-    private String ma;
-    private String ten;
-    private Date ngaySinh;
-    private String email;
-    private String sdt;
-    private int gioiTinh;
-    private String diaChi;
-    private String matKhau;
-    private int trangThai;
+    private Integer idNguoiDung;
+    
+    private ChucVu idChucVu;
+    
+    private String maNguoiDung;
+    
+    private String tenNguoiDung;
+    
+    private Date ngaySinhNguoiDung;
+    
+    private String emailNguoiDung;
+    
+    private String sdtNguoiDung;
+    
+    private Integer gioiTinhNguoiDung;
+    
+    private String diaChiNguoiDung;
+    
+    private String matKhauNguoiDung;
+    
+    private Integer trangThaiNguoiDung;
 
-    public NguoiDung(String string) {
+    public NguoiDung() {
     }
 
-    public NguoiDung(int id, int idCV, String ma, String ten, Date ngaySinh, String email, String sdt, int gioiTinh, String diaChi, String matKhau, int trangThai) {
-        this.id = id;
-        this.idCV = idCV;
-        this.ma = ma;
-        this.ten = ten;
-        this.ngaySinh = ngaySinh;
-        this.email = email;
-        this.sdt = sdt;
-        this.gioiTinh = gioiTinh;
-        this.diaChi = diaChi;
-        this.matKhau = matKhau;
-        this.trangThai = trangThai;
+    public NguoiDung(Integer idNguoiDung, ChucVu idChucVu, String maNguoiDung, String tenNguoiDung, Date ngaySinhNguoiDung, String emailNguoiDung, String sdtNguoiDung, Integer gioiTinhNguoiDung, String diaChiNguoiDung, String matKhauNguoiDung, Integer trangThaiNguoiDung) {
+        this.idNguoiDung = idNguoiDung;
+        this.idChucVu = idChucVu;
+        this.maNguoiDung = maNguoiDung;
+        this.tenNguoiDung = tenNguoiDung;
+        this.ngaySinhNguoiDung = ngaySinhNguoiDung;
+        this.emailNguoiDung = emailNguoiDung;
+        this.sdtNguoiDung = sdtNguoiDung;
+        this.gioiTinhNguoiDung = gioiTinhNguoiDung;
+        this.diaChiNguoiDung = diaChiNguoiDung;
+        this.matKhauNguoiDung = matKhauNguoiDung;
+        this.trangThaiNguoiDung = trangThaiNguoiDung;
     }
 
-    public int getId() {
-        return id;
+    public NguoiDung(String maNguoiDung, String tenNguoiDung, Date ngaySinhNguoiDung, String emailNguoiDung, String sdtNguoiDung, Integer gioiTinhNguoiDung, String diaChiNguoiDung, String matKhauNguoiDung, Integer trangThaiNguoiDung) {
+        this.maNguoiDung = maNguoiDung;
+        this.tenNguoiDung = tenNguoiDung;
+        this.ngaySinhNguoiDung = ngaySinhNguoiDung;
+        this.emailNguoiDung = emailNguoiDung;
+        this.sdtNguoiDung = sdtNguoiDung;
+        this.gioiTinhNguoiDung = gioiTinhNguoiDung;
+        this.diaChiNguoiDung = diaChiNguoiDung;
+        this.matKhauNguoiDung = matKhauNguoiDung;
+        this.trangThaiNguoiDung = trangThaiNguoiDung;
+    }
+    
+    
+
+    public Integer getIdNguoiDung() {
+        return idNguoiDung;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIdNguoiDung(Integer idNguoiDung) {
+        this.idNguoiDung = idNguoiDung;
     }
 
-    public int getIdCV() {
-        return idCV;
+    public ChucVu getIdChucVu() {
+        return idChucVu;
     }
 
-    public void setIdCV(int idCV) {
-        this.idCV = idCV;
+    public void setIdChucVu(ChucVu idChucVu) {
+        this.idChucVu = idChucVu;
     }
 
-    public String getMa() {
-        return ma;
+    public String getMaNguoiDung() {
+        return maNguoiDung;
     }
 
-    public void setMa(String ma) {
-        this.ma = ma;
+    public void setMaNguoiDung(String maNguoiDung) {
+        this.maNguoiDung = maNguoiDung;
     }
 
-    public String getTen() {
-        return ten;
+    public String getTenNguoiDung() {
+        return tenNguoiDung;
     }
 
-    public void setTen(String ten) {
-        this.ten = ten;
+    public void setTenNguoiDung(String tenNguoiDung) {
+        this.tenNguoiDung = tenNguoiDung;
     }
 
-    public Date getNgaySinh() {
-        return ngaySinh;
+    public Date getNgaySinhNguoiDung() {
+        return ngaySinhNguoiDung;
     }
 
-    public void setNgaySinh(Date ngaySinh) {
-        this.ngaySinh = ngaySinh;
+    public void setNgaySinhNguoiDung(Date ngaySinhNguoiDung) {
+        this.ngaySinhNguoiDung = ngaySinhNguoiDung;
     }
 
-    public String getEmail() {
-        return email;
+    public String getEmailNguoiDung() {
+        return emailNguoiDung;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setEmailNguoiDung(String emailNguoiDung) {
+        this.emailNguoiDung = emailNguoiDung;
     }
 
-    public String getSdt() {
-        return sdt;
+    public String getSdtNguoiDung() {
+        return sdtNguoiDung;
     }
 
-    public void setSdt(String sdt) {
-        this.sdt = sdt;
+    public void setSdtNguoiDung(String sdtNguoiDung) {
+        this.sdtNguoiDung = sdtNguoiDung;
     }
 
-    public int getGioiTinh() {
-        return gioiTinh;
+    public Integer getGioiTinhNguoiDung() {
+        return gioiTinhNguoiDung;
     }
 
-    public void setGioiTinh(int gioiTinh) {
-        this.gioiTinh = gioiTinh;
+    public void setGioiTinhNguoiDung(Integer gioiTinhNguoiDung) {
+        this.gioiTinhNguoiDung = gioiTinhNguoiDung;
     }
 
-    public String getDiaChi() {
-        return diaChi;
+    public String getDiaChiNguoiDung() {
+        return diaChiNguoiDung;
     }
 
-    public void setDiaChi(String diaChi) {
-        this.diaChi = diaChi;
+    public void setDiaChiNguoiDung(String diaChiNguoiDung) {
+        this.diaChiNguoiDung = diaChiNguoiDung;
     }
 
-    public String getMatKhau() {
-        return matKhau;
+    public String getMatKhauNguoiDung() {
+        return matKhauNguoiDung;
     }
 
-    public void setMatKhau(String matKhau) {
-        this.matKhau = matKhau;
+    public void setMatKhauNguoiDung(String matKhauNguoiDung) {
+        this.matKhauNguoiDung = matKhauNguoiDung;
     }
 
-    public int getTrangThai() {
-        return trangThai;
+    public Integer getTrangThaiNguoiDung() {
+        return trangThaiNguoiDung;
     }
 
-    public void setTrangThai(int trangThai) {
-        this.trangThai = trangThai;
+    public void setTrangThaiNguoiDung(Integer trangThaiNguoiDung) {
+        this.trangThaiNguoiDung = trangThaiNguoiDung;
     }
-
+    
     
 }

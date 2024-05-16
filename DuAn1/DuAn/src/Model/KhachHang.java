@@ -11,21 +11,43 @@ import java.util.Date;
  * @author Windows
  */
 public class KhachHang {
-    private int id;
+     private Integer id;
+    
     private String ma;
+    
     private String ten;
+    
     private Date ngaySinh;
-    private int gioiTinh;
+    
+    private Integer gioiTinh;
+    
     private String sdt;
+    
     private String email;
+    
     private String diaChi;
-    private int diemTichLuy;
-    private int trangThai;
+    
+    private Integer diemTichLuy;
+    
+    private Integer trangThai;
 
-    public KhachHang(String string) {
+    public KhachHang() {
     }
 
-    public KhachHang(int id, String ma, String ten, Date ngaySinh, int gioiTinh, String sdt, String email, String diaChi, int diemTichLuy, int trangThai) {
+    public KhachHang(Integer id, String ma, String ten, Date ngaySinh, Integer gioiTinh, String sdt, String email, String diaChi, Integer trangThai) {
+        this.id = id;
+        this.ma = ma;
+        this.ten = ten;
+        this.ngaySinh = ngaySinh;
+        this.gioiTinh = gioiTinh;
+        this.sdt = sdt;
+        this.email = email;
+        this.diaChi = diaChi;
+        this.trangThai = trangThai;
+    }
+    
+
+    public KhachHang(Integer id, String ma, String ten, Date ngaySinh, Integer gioiTinh, String sdt, String email, String diaChi, Integer diemTichLuy, Integer trangThai) {
         this.id = id;
         this.ma = ma;
         this.ten = ten;
@@ -38,11 +60,11 @@ public class KhachHang {
         this.trangThai = trangThai;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -70,11 +92,11 @@ public class KhachHang {
         this.ngaySinh = ngaySinh;
     }
 
-    public int getGioiTinh() {
+    public Integer getGioiTinh() {
         return gioiTinh;
     }
 
-    public void setGioiTinh(int gioiTinh) {
+    public void setGioiTinh(Integer gioiTinh) {
         this.gioiTinh = gioiTinh;
     }
 
@@ -102,19 +124,19 @@ public class KhachHang {
         this.diaChi = diaChi;
     }
 
-    public int getDiemTichLuy() {
+    public Integer getDiemTichLuy() {
         return diemTichLuy;
     }
 
-    public void setDiemTichLuy(int diemTichLuy) {
+    public void setDiemTichLuy(Integer diemTichLuy) {
         this.diemTichLuy = diemTichLuy;
     }
 
-    public int getTrangThai() {
+    public Integer getTrangThai() {
         return trangThai;
     }
 
-    public void setTrangThai(int trangThai) {
+    public void setTrangThai(Integer trangThai) {
         this.trangThai = trangThai;
     }
     

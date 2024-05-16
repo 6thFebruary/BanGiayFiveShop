@@ -4,44 +4,56 @@
  */
 package Model;
 
-import java.time.DateTimeException;
 import java.util.Date;
 
 /**
  *
  * @author Windows
  */
-public class HoaDon {
+public class HoaDon{
     private String id;
+    
     private String ma;
-    private String idND;
-    private String idKH;
-    private String idKM;
+    
+    private NguoiDung idNguoiDung;
+    
+    private String idKhachHang;
+    
+    private String idKhuyenMai;
+    
     private Double tongTien;
+    
     private Double thanhTien;
-    private Date NgayThanhToan;
-    private Date NgayTao;
-    private Date NgaySua;
-    private String moTa;
+    
+    private Date ngayThanhToan;
+    
+    private Date ngayTao;
+    
+    private Date ngaySua;
+    
     private Integer trangThai;
 
     public HoaDon() {
     }
 
-    public HoaDon(String id, String ma, String idND, String idKH, String idKM, Double tongTien, Double thanhTien, Date NgayThanhToan, Date NgayTao, Date NgaySua, String moTa, Integer trangThai) {
+    public HoaDon(String id, String ma, NguoiDung idNguoiDung, String idKhachHang, String idKhuyenMai, Double tongTien, Double thanhTien, Date ngayThanhToan, Date ngayTao, Date ngaySua, Integer trangThai) {
         this.id = id;
         this.ma = ma;
-        this.idND = idND;
-        this.idKH = idKH;
-        this.idKM = idKM;
+        this.idNguoiDung = idNguoiDung;
+        this.idKhachHang = idKhachHang;
+        this.idKhuyenMai = idKhuyenMai;
         this.tongTien = tongTien;
         this.thanhTien = thanhTien;
-        this.NgayThanhToan = NgayThanhToan;
-        this.NgayTao = NgayTao;
-        this.NgaySua = NgaySua;
-        this.moTa = moTa;
+        this.ngayThanhToan = ngayThanhToan;
+        this.ngayTao = ngayTao;
+        this.ngaySua = ngaySua;
         this.trangThai = trangThai;
     }
+
+    public HoaDon(String id) {
+        this.id = id;
+    }
+
 
     public String getId() {
         return id;
@@ -59,28 +71,28 @@ public class HoaDon {
         this.ma = ma;
     }
 
-    public String getIdND() {
-        return idND;
+    public NguoiDung getIdNguoiDung() {
+        return idNguoiDung;
     }
 
-    public void setIdND(String idND) {
-        this.idND = idND;
+    public void setIdNguoiDung(NguoiDung idNguoiDung) {
+        this.idNguoiDung = idNguoiDung;
     }
 
-    public String getIdKH() {
-        return idKH;
+    public String getIdKhachHang() {
+        return idKhachHang;
     }
 
-    public void setIdKH(String idKH) {
-        this.idKH = idKH;
+    public void setIdKhachHang(String idKhachHang) {
+        this.idKhachHang = idKhachHang;
     }
 
-    public String getIdKM() {
-        return idKM;
+    public String getIdKhuyenMai() {
+        return idKhuyenMai;
     }
 
-    public void setIdKM(String idKM) {
-        this.idKM = idKM;
+    public void setIdKhuyenMai(String idKhuyenMai) {
+        this.idKhuyenMai = idKhuyenMai;
     }
 
     public Double getTongTien() {
@@ -100,35 +112,27 @@ public class HoaDon {
     }
 
     public Date getNgayThanhToan() {
-        return NgayThanhToan;
+        return ngayThanhToan;
     }
 
-    public void setNgayThanhToan(Date NgayThanhToan) {
-        this.NgayThanhToan = NgayThanhToan;
+    public void setNgayThanhToan(Date ngayThanhToan) {
+        this.ngayThanhToan = ngayThanhToan;
     }
 
     public Date getNgayTao() {
-        return NgayTao;
+        return ngayTao;
     }
 
-    public void setNgayTao(Date NgayTao) {
-        this.NgayTao = NgayTao;
+    public void setNgayTao(Date ngayTao) {
+        this.ngayTao = ngayTao;
     }
 
     public Date getNgaySua() {
-        return NgaySua;
+        return ngaySua;
     }
 
-    public void setNgaySua(Date NgaySua) {
-        this.NgaySua = NgaySua;
-    }
-
-    public String getMoTa() {
-        return moTa;
-    }
-
-    public void setMoTa(String moTa) {
-        this.moTa = moTa;
+    public void setNgaySua(Date ngaySua) {
+        this.ngaySua = ngaySua;
     }
 
     public Integer getTrangThai() {
@@ -138,8 +142,6 @@ public class HoaDon {
     public void setTrangThai(Integer trangThai) {
         this.trangThai = trangThai;
     }
-
-    
     
     
 }
