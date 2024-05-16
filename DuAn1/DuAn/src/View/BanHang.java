@@ -769,7 +769,7 @@ public class BanHang extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_thanhToan1ActionPerformed
 
     private void btn_huyHoaDon1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_huyHoaDon1ActionPerformed
-
+        
     }//GEN-LAST:event_btn_huyHoaDon1ActionPerformed
 
     private void btn_tru1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_tru1ActionPerformed
