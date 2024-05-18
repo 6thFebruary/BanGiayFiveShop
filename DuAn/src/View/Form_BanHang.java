@@ -26,6 +26,7 @@ public class Form_BanHang extends javax.swing.JPanel {
     HoaDonRepo hdRepo = new HoaDonRepo();
     HoaDon hd = new HoaDon();
     HoaDonChoRepo hdcRepo = new HoaDonChoRepo();
+    
 
     public Form_BanHang() {
         initComponents();
@@ -113,6 +114,63 @@ public class Form_BanHang extends javax.swing.JPanel {
             return true;
         }
     }
+    public void clearFormHoaDon1() {
+        jlb_maHoaDon2.setText("");
+        txt_sdtKH2.setText("");
+        txt_tenKH2.setText("");
+        txt_thanhtien2.setText("");
+        txt_tienKhachTra2.setText("");
+        txt_tongTien2.setText("");
+        txt_tienThua2.setText("");
+        txt_tienKhachTra2.setText("");
+        txt_maVoucher2.setText("");
+        txt_phanTramGiam2.setText("");
+    }
+    
+    
+    
+    
+    private void showDetailHDC() {
+        int row = tb_hoadon2.getSelectedRow();
+
+        // Kiểm tra xem có hàng nào được chọn không
+        if (row != -1) {
+            jlb_maHoaDon2.setText(tb_hoadon2.getValueAt(row, 0).toString());
+            String maHD = tb_hoadon2.getValueAt(row, 0).toString();
+            String idHD = hdcRepo.getIdHoaDonByMa(maHD);
+            Double tongtien = hdcRepo.getGiaTienHDCTtoTongTienHDbyIdHD(idHD);
+            hdcRepo.capNhatTongTienHoaDon(idHD, tongtien);
+            DecimalFormat decimalFormat = new DecimalFormat("#,##0");
+            String formattedTongTien = decimalFormat.format(tongtien);
+            txt_tongTien2.setText(formattedTongTien);
+
+        } else {
+            // Xử lý khi không có hàng nào được chọn, có thể hiển thị thông báo hoặc thực hiện các hành động khác
+            System.out.println("Không có hàng nào được chọn!");
+        }
+    }
+    
+    public void clearFormGioHang() {
+        ArrayList<HoaDonChiTiet> listCTHD = hdcRepo.getAllHoaDonTatCa();
+        int rowHD = tb_hoadon2.getSelectedRow();
+        String maHD = tb_hoadon2.getValueAt(rowHD, 0).toString();
+        String idHD = hdcRepo.getIdHoaDonByMa(maHD);
+        hdcRepo.xoaHoaDonChiTiet(idHD);
+
+        for (HoaDonChiTiet hoaDonChiTiet : listCTHD) {
+            String chiTietDep = hoaDonChiTiet.getIdCTG();
+            int slnew = hoaDonChiTiet.getSoLuong();
+            hdcRepo.capNhatSoLuongChiTietSanPham(chiTietDep, slnew);
+        }
+        DefaultTableModel model = (DefaultTableModel) tb_giohang2.getModel();
+        model.setRowCount(0);
+        // fillTableGioHang();
+        // fillTableSanPham();
+        showDetailHDC();
+
+    }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -1441,11 +1499,39 @@ public class Form_BanHang extends javax.swing.JPanel {
     }//GEN-LAST:event_btn_update2ActionPerformed
 
     private void btn_delete2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_delete2ActionPerformed
+       int rowGH = tb_giohang2.getSelectedRow();
+    if(rowGH <= -1) {
+        JOptionPane.showMessageDialog(this, "Chọn 1 dòng để xóa !");
+        return;
+    }
 
+    int cf = JOptionPane.showConfirmDialog(this, "Bạn có muốn xóa sản phẩm '" + tb_giohang2.getValueAt(rowGH, 1) + "' ra khỏi giỏ hàng không ?", "Xóa giỏ hàng !", JOptionPane.YES_NO_OPTION);
+    if(cf == JOptionPane.NO_OPTION) {
+        return;
+    }
+
+    String idHDCT = tb_giohang2.getValueAt(rowGH, 0).toString();
+    int s1_hdct = Integer.parseInt(tb_giohang2.getValueAt(rowGH, 2).toString());
+    String idCTSP = hdcRepo.getIdCTSPbyIdHDCT(idHDCT);
+    if(idCTSP == null) {
+        JOptionPane.showMessageDialog(this, "Không thể xác định ID của sản phẩm !");
+        return;
+    }
+
+    Integer s1_ctsp = hdcRepo.getSoLuongByIdCTSP(idCTSP);
+    if(s1_ctsp == null) {
+        JOptionPane.showMessageDialog(this, "Không thể xác định số lượng của sản phẩm !");
+        return;
+    }
+    
+    int new_s1_ctsp = s1_ctsp + s1_hdct;
+    hdcRepo.updteSoLuongChiTietSanPham(new_s1_ctsp, idCTSP);
+    hdcRepo.xoaHoaDonCT(idCTSP);
     }//GEN-LAST:event_btn_delete2ActionPerformed
 
     private void btn_clear2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_clear2ActionPerformed
-
+        clearFormHoaDon1();
+        loadtable(listspct);
     }//GEN-LAST:event_btn_clear2ActionPerformed
 
     private void tb_HdSp2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tb_HdSp2MouseClicked
@@ -1584,7 +1670,39 @@ public class Form_BanHang extends javax.swing.JPanel {
     }//GEN-LAST:event_btn_thanhToan2ActionPerformed
 
     private void btn_huyHoaDon2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_huyHoaDon2ActionPerformed
+        //Huy HoaDon
+        int row = tb_hoadon2.getSelectedRow();
+        if (row <= -1) {
+            JOptionPane.showMessageDialog(this, "Phải chọn 1 dòng !");
+        } else {
+            int choice = JOptionPane.showConfirmDialog(this, "Bạn có muốn xóa hóa đơn '" + tb_hoadon2.getValueAt(row, 0) + "' không ???", "Xóa hóa đơn chờ !", JOptionPane.YES_NO_OPTION);
+            if (choice == JOptionPane.YES_OPTION) {
+                String maHoaDon = tb_hoadon2.getValueAt(row, 0).toString();
+                clearFormGioHang();
+                hdcRepo.xoaHoaDonCho(maHoaDon);
 
+                DefaultTableModel model = (DefaultTableModel) tb_giohang2.getModel();
+                model.setRowCount(0);
+                // trả lại số lượng sản phẩm 
+                int rowHD = tb_hoadon2.getSelectedRow();
+                String maHD = tb_hoadon2.getValueAt(rowHD, 0).toString();
+                String idHD = hdcRepo.getIdHoaDonByMa(maHD);
+                ArrayList<HoaDonChiTiet> listCTHD = hdcRepo.getAllHoaDonChiTietTheoIdHD(idHD);
+                hdcRepo.xoaHoaDonChiTiet(idHD);
+
+                for (HoaDonChiTiet hoaDonChiTiet : listCTHD) {
+                    String chiTietDep = hoaDonChiTiet.getIdCTG();
+                    int slDaGiam = hoaDonChiTiet.getSoLuong();
+                    hdcRepo.capNhatSoLuongChiTietSanPham(chiTietDep, slDaGiam);
+                }
+
+                fillTableHoaDonCho();
+                getGioHang();
+                clearFormHoaDon1();
+
+                JOptionPane.showMessageDialog(this, "Xóa thành công !");
+            }
+        }
     }//GEN-LAST:event_btn_huyHoaDon2ActionPerformed
 
     private void btn_tru2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_tru2ActionPerformed
@@ -1604,11 +1722,15 @@ public class Form_BanHang extends javax.swing.JPanel {
     }//GEN-LAST:event_btn_huyKH2ActionPerformed
 
     private void btn_chonKH2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_chonKH2ActionPerformed
-
+        //Chọn khách hàng
     }//GEN-LAST:event_btn_chonKH2ActionPerformed
 
     private void btn_chonVoucher2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_chonVoucher2ActionPerformed
-
+        
+        try {
+            
+        } catch (Exception e) {
+        }
     }//GEN-LAST:event_btn_chonVoucher2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed

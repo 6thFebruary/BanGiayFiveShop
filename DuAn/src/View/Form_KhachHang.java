@@ -4,17 +4,18 @@
  */
 package View;
 
+
+
 /**
  *
  * @author ACER
  */
 public class Form_KhachHang extends javax.swing.JPanel {
 
-    /**
-     * Creates new form View_KhachHang
-     */
+   
     public Form_KhachHang() {
         initComponents();
+        
     }
 
     /**
@@ -45,7 +46,7 @@ public class Form_KhachHang extends javax.swing.JPanel {
         jTextField1 = new javax.swing.JTextField();
         jButton8 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblKhachHang = new javax.swing.JTable();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
@@ -125,7 +126,7 @@ public class Form_KhachHang extends javax.swing.JPanel {
                 .addGap(11, 11, 11))
         );
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblKhachHang.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},
                 {},
@@ -136,7 +137,7 @@ public class Form_KhachHang extends javax.swing.JPanel {
 
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblKhachHang);
 
         jButton4.setText("<<");
 
@@ -334,7 +335,6 @@ public class Form_KhachHang extends javax.swing.JPanel {
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
@@ -342,5 +342,6 @@ public class Form_KhachHang extends javax.swing.JPanel {
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
+    private javax.swing.JTable tblKhachHang;
     // End of variables declaration//GEN-END:variables
 }
