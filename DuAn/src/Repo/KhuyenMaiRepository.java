@@ -18,41 +18,42 @@ import java.util.ArrayList;
  * @author Windows
  */
 public class KhuyenMaiRepository implements KhuyenMaiRepositoryImpl{
-    DBConnext cdao = new DBConnext();
+    DBConnext dbConNext = new DBConnext();
 
     @Override
     public ArrayList<KhuyenMai> getAllKM() {
         ArrayList<KhuyenMai> dskm = new ArrayList<>();
-        String sql = "Select from KHUYENMAI";
+        String sql = "Select * from KHUYENMAI";
         try {
-            Connection con = cdao.getConnection();
+            Connection con = dbConNext.getConnection();
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                dskm.add(new KhuyenMai(rs.getString(1),
-                        rs.getString(2),
-                        rs.getDouble(3),
-                        rs.getDouble(4),
-                        rs.getInt(5),
-                        rs.getDate(6),
-                        rs.getDate(7),
-                        rs.getInt(8),
-                        rs.getInt(9),
-                        rs.getString(10)));
+                KhuyenMai km = new KhuyenMai();
+                km.setMa(rs.getString("Ma"));
+                km.setTen(rs.getString("Ten"));
+                km.setPhanTramGiam(rs.getDouble("PhanTramGiam"));
+                km.setGiaGiam(rs.getDouble("GiaGiam"));
+                km.setSoLuong(rs.getInt("SoLuong"));
+                km.setHinhThucGiam(rs.getInt("HinhThucGiam"));
+                km.setNgayBatDau(rs.getDate("NgayBatDau"));
+                km.setNgayKetThuc(rs.getDate("NgayKetThuc"));
+                km.setTrangThai(rs.getInt("TrangThai"));
+                km.setMoTa(rs.getString("Mota"));
+                dskm.add(km);
             }
         } catch (Exception e) {
             System.out.println("Lỗi GetAll KhuyenMai!");
         }
         return dskm;
     }
-
     @Override
     public boolean add(KhuyenMai km) {
         String sql = "INSERT INTO KHUYENMAI (Ma, Ten, PhanTramGiam, GiaGiam, SoLuong, NgayBatDau, NgayKetThuc, HinhThucGiam, TrangThai, MoTa)\n"
                 + "VALUES \n"
                 + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
-            Connection con = cdao.getConnection();
+            Connection con = dbConNext.getConnection();
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setObject(1, km.getMa());
             ps.setObject(2, km.getTen());
@@ -78,7 +79,7 @@ public class KhuyenMaiRepository implements KhuyenMaiRepositoryImpl{
         String sql = "Update KHUYENMAI Set Ten= ?, PhanTramGiam = ?, GiaGiam = ?,"
                 + " SoLuong = ?, NgayBatDau = ?, NgayKetThuc = ?, HinhThucGiam = ?, TrangThai= ?, MoTa = ? where Ma= ?";
         try {
-            Connection con = cdao.getConnection();
+            Connection con = dbConNext.getConnection();
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setObject(1, km.getTen());
             ps.setObject(2, km.getPhanTramGiam());
@@ -106,7 +107,7 @@ public class KhuyenMaiRepository implements KhuyenMaiRepositoryImpl{
         String sql = "Select Ma, Ten, PhanTramGiam, GiaGiam , SoLuong, NgayBatDau, NgayKetThuc, HinhThucGiam, TrangThai, MoTa from KHUYENMAI\n"
                 + "WHERE NgayBatDau >= ? and NgayKetThuc <= ? ";
         try {
-            Connection con = cdao.getConnection();
+            Connection con = dbConNext.getConnection();
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, ngayBatDau);
             ps.setString(2, ngayKetThuc);
@@ -213,7 +214,7 @@ public class KhuyenMaiRepository implements KhuyenMaiRepositoryImpl{
         ArrayList<KhuyenMai> listTimKiem = new ArrayList<>();
         String sql = "SELECT Ma, Ten, PhanTramGiam, SoLuong, NgayBatDau, NgayKetThuc, TrangThai, MoTa FROM KHUYENMAI WHERE Ma =? or Ten =? or PhanTramGiam = ?";
         try {
-            Connection con = cdao.getConnection();
+            Connection con = dbConNext.getConnection();
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, ma);
             ps.setString(2, ten);

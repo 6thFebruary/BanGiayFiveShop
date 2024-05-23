@@ -7,6 +7,7 @@ package Repo;
 import Model.ChiTietGiay;
 import Model.HoaDon;
 import Model.HoaDonChiTiet;
+import Model.KhuyenMai;
 import Utilities.DBConnext;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -76,6 +77,93 @@ public class HoaDonChoRepo {
         }
         return row;
     }
+    public String getIdHDCTbyHD(String idHD) {
+        String idHDCT = null;
+
+        String sql = "  SELECT Id FROM HOADONCHITIET WHERE IdHD = ?";
+        try {
+            Connection con = DBConnext.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, idHD);
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                idHDCT = rs.getString("Id");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return idHDCT;
+    }
+     public Integer updateSoLuongChiTietSanPham(Integer slsp, String Id) {
+        Integer row = null;
+        String sql = "UPDATE CHITIETGIAY SET SoLuong = ? WHERE Id =?";
+        try {
+            Connection n = DBConnext.getConnection();
+            PreparedStatement ptm = n.prepareCall(sql);
+            ptm.setInt(1, slsp);
+            ptm.setString(2, Id);
+            row = ptm.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return row;
+    }
+     public void xoaGioHang(String id) {
+        String sql = "  DELETE HOADONCHITIET WHERE Id = ? AND TrangThai = 0";
+        try {
+            Connection con = DBConnext.getConnection();
+            PreparedStatement ptm = con.prepareStatement(sql);
+            ptm.setString(1, id);
+            ptm.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+     public void updateTrangThaiHoaDon(String idHD) {
+        String sql = "UPDATE HOADON SET TrangThai =1 WHERE Id = ?";
+        try {
+            Connection con = DBConnext.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, idHD);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void ngayThanhToanHoaDon(String idHD) {
+        String sql = "UPDATE HOADON SET NgayThanhToan = ? WHERE Id = ?";
+        try {
+            Connection con = DBConnext.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql);
+
+            ps.setDate(1, java.sql.Date.valueOf(LocalDate.now()));
+            ps.setString(2, idHD);
+            ps.executeUpdate();
+            ps.close();
+            con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateTienHoaDon(String idHD, Double tongTien, Double thanhTien) {
+        String sql = "UPDATE HOADON SET TongTien = ?, ThanhTien = ? WHERE Id = ?";
+        try {
+            Connection connection = DBConnext.getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setDouble(1, tongTien);
+            ps.setDouble(2, thanhTien);
+            ps.setString(3, idHD);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public Integer checkGioHang(String idHD, String idCTSP) {
         Integer row = 0;
@@ -93,6 +181,90 @@ public class HoaDonChoRepo {
             e.printStackTrace();
         }
         return row;
+    }
+
+    public void capNhatTongTienHoaDon(String idHD, Double tongTien) {
+        String sql = "UPDATE HOADON SET TongTien = TongTien+? WHERE Id = ?";
+        try {
+            Connection con = DBConnext.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setDouble(1, tongTien);
+            ps.setString(2, idHD);
+            ps.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String getSDTKHbyIDHD(String idHD) {
+        String sdt = null;
+        try {
+            Connection con = DBConnext.getConnection();
+            String sql = "SELECT KHACHHANG.Sdt FROM HOADON JOIN KHACHHANG ON HOADON.IdKH = KHACHHANG.Id WHERE HOADON.Id = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, idHD);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                sdt = rs.getString("Sdt");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return sdt;
+    }
+
+    public KhuyenMai getHinThucGiamibyMa(String makm) {
+        KhuyenMai km = null;
+        String sql = "SELECT HinhThucGiam  FROM KHUYENMAI WHERE Ma = ?";
+        try {
+            Connection con = DBConnext.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, makm);
+            ResultSet rs = ps.executeQuery();
+            try {
+                if (rs.next()) {
+                    km = new KhuyenMai();
+                    km.setHinhThucGiam(rs.getInt("HinhThucGiam"));
+                }
+            } catch (Exception e) {
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return km;
+    }
+     public String getPhanTramGiambyIdHD(String idHD) {
+        String ptg = null;
+        try {
+            Connection con = DBConnext.getConnection();
+            String sql = "SELECT KHUYENMAI.PhanTramGiam FROM HOADON JOIN KHUYENMAI ON HOADON.IdKM = KHUYENMAI.Id WHERE HOADON.Id = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, idHD);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                ptg = rs.getString("PhanTramGiam");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ptg;
+    }
+     public String getGiaGiambyIdHD(String idHD) {
+        String ptg = null;
+        try {
+            Connection con = DBConnext.getConnection();
+            String sql = "SELECT KHUYENMAI.GiaGiam FROM HOADON JOIN KHUYENMAI ON HOADON.IdKM = KHUYENMAI.Id WHERE HOADON.Id = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, idHD);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                ptg = rs.getString("GiaGiam");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ptg;
     }
 
     public Integer updateDSSP(Integer slsp, String Id) {
@@ -146,16 +318,16 @@ public class HoaDonChoRepo {
         }
         return row;
     }
-    
-    public String getIdCTSPbyIdHDCT(String idHDCT){
+
+    public String getIdCTSPbyIdHDCT(String idHDCT) {
         String idCTD = null;
-        
+
         String sql = "SELECT IdCTD FROM HOADONCHITIET WHERE Id = ?";
         try {
             Connection con = DBConnext.getConnection();
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, idHDCT);
-            
+
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 idCTD = rs.getString("IdCTD");
@@ -165,7 +337,7 @@ public class HoaDonChoRepo {
         }
         return idCTD;
     }
-    
+
     public Integer getSoLuongByIdCTSP(String idCTSP) {
         Integer soLuong = null;
 
@@ -184,7 +356,7 @@ public class HoaDonChoRepo {
         }
         return soLuong;
     }
-    
+
     public Integer updteSoLuongChiTietSanPham(Integer slsp, String Id) {
         Integer row = null;
         String sql = "UPDATE CHITIETGIAY SET SoLuong = ? WHERE Id =?";
@@ -199,7 +371,7 @@ public class HoaDonChoRepo {
         }
         return row;
     }
-    
+
     public void xoaHoaDonCT(String id) {
         String sql = "DELETE FROM HOADONCHITIET WHERE Id = ?";
         try {
@@ -213,7 +385,7 @@ public class HoaDonChoRepo {
         }
 
     }
-    
+
     public String getIdHoaDonByMa(String maHD) {
         String idHD = null;
 
@@ -232,7 +404,7 @@ public class HoaDonChoRepo {
         }
         return idHD;
     }
-    
+
     public Double getGiaTienHDCTtoTongTienHDbyIdHD(String idHD) {
         Double row = null;
         String sql = "SELECT SUM(DonGia) FROM HOADONCHITIET WHERE IdHD = ?";
@@ -249,21 +421,7 @@ public class HoaDonChoRepo {
         }
         return row;
     }
-    
-    public void capNhatTongTienHoaDon(String idHD, Double tongTien) {
-        String sql = "UPDATE HOADON SET TongTien = TongTien+? WHERE Id = ?";
-        try {
-            Connection con = DBConnext.getConnection();
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setDouble(1, tongTien);
-            ps.setString(2, idHD);
-            ps.executeUpdate();
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    
     public ArrayList<HoaDonChiTiet> getAllHoaDonTatCa() {
         ArrayList<HoaDonChiTiet> listHD = new ArrayList<>();
         try {
@@ -287,7 +445,7 @@ public class HoaDonChoRepo {
         return listHD;
 
     }
-    
+
     public void xoaHoaDonChiTiet(String id) {
         String sql = "DELETE  FROM HOADONCHITIET WHERE IdHD =? AND  TrangThai =0";
         try {
@@ -301,7 +459,7 @@ public class HoaDonChoRepo {
         }
 
     }
-    
+
     public void xoaHoaDonCho(String ma) {
         String sql = "DELETE FROM HOADON WHERE Ma = ?";
         try {
@@ -315,9 +473,7 @@ public class HoaDonChoRepo {
         }
 
     }
-    
-    
-    
+
     public void capNhatSoLuongChiTietSanPham(String idCTSP, int slXoa) {
 
         String sql = "UPDATE CHITIETGIAY SET SoLuong = SoLuong+? WHERE Id= ?";
@@ -332,7 +488,7 @@ public class HoaDonChoRepo {
             e.printStackTrace();
         }
     }
-    
+
     public ArrayList<HoaDonChiTiet> getAllHoaDonChiTietTheoIdHD(String idHD) {
         ArrayList<HoaDonChiTiet> listHD = new ArrayList<>();
         try {
@@ -356,7 +512,6 @@ public class HoaDonChoRepo {
         }
         return listHD;
     }
-
 
     public static void main(String[] args) {
         HoaDonChoRepo hd = new HoaDonChoRepo();
