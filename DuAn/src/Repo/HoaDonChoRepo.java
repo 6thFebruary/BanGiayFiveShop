@@ -77,6 +77,51 @@ public class HoaDonChoRepo {
         }
         return row;
     }
+    public String getIdHDCTbyHD(String idHD) {
+        String idHDCT = null;
+
+        String sql = "  SELECT Id FROM HOADONCHITIET WHERE IdHD = ?";
+        try {
+            Connection con = DBConnext.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, idHD);
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                idHDCT = rs.getString("Id");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return idHDCT;
+    }
+     public Integer updateSoLuongChiTietSanPham(Integer slsp, String Id) {
+        Integer row = null;
+        String sql = "UPDATE CHITIETGIAY SET SoLuong = ? WHERE Id =?";
+        try {
+            Connection n = DBConnext.getConnection();
+            PreparedStatement ptm = n.prepareCall(sql);
+            ptm.setInt(1, slsp);
+            ptm.setString(2, Id);
+            row = ptm.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return row;
+    }
+     public void xoaGioHang(String id) {
+        String sql = "  DELETE HOADONCHITIET WHERE Id = ? AND TrangThai = 0";
+        try {
+            Connection con = DBConnext.getConnection();
+            PreparedStatement ptm = con.prepareStatement(sql);
+            ptm.setString(1, id);
+            ptm.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
      public void updateTrangThaiHoaDon(String idHD) {
         String sql = "UPDATE HOADON SET TrangThai =1 WHERE Id = ?";
         try {

@@ -1669,34 +1669,59 @@ public class Form_BanHang extends javax.swing.JPanel {
     }//GEN-LAST:event_btn_update2ActionPerformed
 
     private void btn_delete2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_delete2ActionPerformed
-        int rowGH = tb_giohang2.getSelectedRow();
+int rowGH = tb_giohang2.getSelectedRow();
+        int rowHDC = tb_hoadon2.getSelectedRow();
+
+        String maHD = tb_hoadon2.getValueAt(rowHDC, 0).toString();
+        String idHD = hdRepo.getIdHoaDon(maHD);
+        String idHDCT = hdcRepo.getIdHDCTbyHD(idHD);
+
         if (rowGH <= -1) {
-            JOptionPane.showMessageDialog(this, "Chọn 1 dòng để xóa !");
+            JOptionPane.showMessageDialog(this, "Chọn sản phẩm để xóa!");
             return;
         }
-
-        int cf = JOptionPane.showConfirmDialog(this, "Bạn có muốn xóa sản phẩm '" + tb_giohang2.getValueAt(rowGH, 1) + "' ra khỏi giỏ hàng không ?", "Xóa giỏ hàng !", JOptionPane.YES_NO_OPTION);
+        int cf = JOptionPane.showConfirmDialog(
+                this,
+                "Bạn có muốn xóa sản phẩm '" + tb_giohang2.getValueAt(rowGH, 1) + "' ra khỏi giỏ hàng không?",
+                "Xóa giỏ hàng!",
+                JOptionPane.YES_NO_OPTION
+        );
         if (cf == JOptionPane.NO_OPTION) {
             return;
         }
+        if (cf == JOptionPane.YES_OPTION) {
+            String idCTSP = tb_giohang2.getValueAt(rowGH, 0).toString();
+            int s1_hdct = Integer.parseInt(tb_giohang2.getValueAt(rowGH, 2).toString());
 
-        String idHDCT = tb_giohang2.getValueAt(rowGH, 0).toString();
-        int s1_hdct = Integer.parseInt(tb_giohang2.getValueAt(rowGH, 2).toString());
-        String idCTSP = hdcRepo.getIdCTSPbyIdHDCT(idHDCT);
-        if (idCTSP == null) {
-            JOptionPane.showMessageDialog(this, "Không thể xác định ID của sản phẩm !");
-            return;
-        }
+            if (idCTSP == null) {
+                JOptionPane.showMessageDialog(this, "Không thể xác định ID của sản phẩm!");
+                return;
+            }
 
-        Integer s1_ctsp = hdcRepo.getSoLuongByIdCTSP(idCTSP);
-        if (s1_ctsp == null) {
-            JOptionPane.showMessageDialog(this, "Không thể xác định số lượng của sản phẩm !");
-            return;
-        }
+            Integer s1_ctsp = hdcRepo.getSoLuongByIdCTSP(idCTSP);
+            if (s1_ctsp == null) {
+                JOptionPane.showMessageDialog(this, "Không thể xác định số lượng của sản phẩm!");
+                return;
+            }
 
-        int new_s1_ctsp = s1_ctsp + s1_hdct;
-        hdcRepo.updteSoLuongChiTietSanPham(new_s1_ctsp, idCTSP);
-        hdcRepo.xoaHoaDonCT(idCTSP);
+            int new_s1_ctsp = s1_ctsp + s1_hdct;
+
+            // Cập nhật lại số lượng sản phẩm
+            hdcRepo.updateSoLuongChiTietSanPham(new_s1_ctsp, idCTSP);
+
+            // Xóa sản phẩm khỏi giỏ hàng
+            hdcRepo.xoaGioHang(idHDCT);
+
+            // Xóa chi tiết hóa đơn
+            hdcRepo.xoaHoaDonCT(idCTSP);
+
+            // Cập nhật lại giao diện giỏ hàng
+            fillTableGioHang();
+            loadtable(listspct);
+
+            JOptionPane.showMessageDialog(this, "Sản phẩm đã được xóa và số lượng đã được cập nhật.");
+        }      
+
     }//GEN-LAST:event_btn_delete2ActionPerformed
 
     private void btn_clear2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_clear2ActionPerformed
