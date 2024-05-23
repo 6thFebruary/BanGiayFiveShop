@@ -25,7 +25,6 @@ public class ChucVuRepository {
                return new ChucVu(rs.getInt(0), rs.getString(2), rs.getString(3));
             }
         } catch (SQLException ex) {
-
              ex.printStackTrace(System.out);
         }
         return null;

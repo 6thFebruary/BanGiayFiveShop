@@ -15,28 +15,30 @@ import javax.swing.table.DefaultTableModel;
  */
 public class hi extends javax.swing.JFrame {
 
+    KhuyenMaiRepository kmrepo = new KhuyenMaiRepository();
+    ArrayList<KhuyenMai> km = kmrepo.getAllKM();
     private KhuyenMaiRepository repo;
+
     public hi() {
         initComponents();
-        loadTable();
+        loadTable(km);
     }
-    
-    public void loadTable(){
-        ArrayList<KhuyenMai> kmm = new ArrayList<>();
+
+    public void loadTable(ArrayList<KhuyenMai> km) {
         DefaultTableModel dtm = (DefaultTableModel) tblKhuyenMai.getModel();
         dtm.setRowCount(0);
-        for (KhuyenMai km : kmm) {
+        for (KhuyenMai khuyenMai : km) {
             Object[] data = new Object[]{
-                km.getMa(),
-                km.getTen(),
-                km.getPhanTramGiam(),
-                km.getGiaGiam(),
-                km.getSoLuong(),
-                km.getNgayBatDau(),
-                km.getNgayKetThuc(),
-                km.getHinhThucGiam() == 1 ? "Giảm %" : "Giảm tiền",
-                km.getTrangThai() == 1 ? "Đang hoạt động" : "Ngừng hoạt động",
-                km.getMoTa()
+                khuyenMai.getMa(),
+                khuyenMai.getTen(),
+                khuyenMai.getPhanTramGiam(),
+                khuyenMai.getHinhThucGiam() == 1 ? "Giảm %" : "Giảm tiền",
+                khuyenMai.getGiaGiam(),
+                khuyenMai.getSoLuong(),
+                khuyenMai.getNgayBatDau(),
+                khuyenMai.getNgayKetThuc(),
+                khuyenMai.getTrangThai() == 1 ? "Đang hoạt động" : "Ngừng hoạt động",
+                khuyenMai.getMoTa()
             };
             dtm.addRow(data);
         }
@@ -76,11 +78,11 @@ public class hi extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Mã KM", "Tên KM", "Mức giảm (%)", "Giảm Tiền ", "Số lượng", "Ngày bắt đầu", "Ngày kết thúc", "Trạng thái", "Mô Tả"
+                "Mã KM", "Tên KM", "Mức giảm (%)", "Hinh Thuc Giam", "Giảm Tiền ", "Số lượng", "Ngày bắt đầu", "Ngày kết thúc", "Trạng thái", "Mô Tả"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false
+                false, false, false, true, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
