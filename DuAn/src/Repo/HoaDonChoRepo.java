@@ -512,6 +512,19 @@ public class HoaDonChoRepo {
         }
         return listHD;
     }
+    
+     public void updateSoLuongHDCT(HoaDonChiTiet hdct) {
+        String sql = "UPDATE HOADONCHITIET SET SoLuong = ? WHERE Id = ?";
+        try {
+            Connection con = DBConnext.getConnection();
+            PreparedStatement ptm = con.prepareStatement(sql);
+            ptm.setInt(1, hdct.getSoLuong());
+            ptm.setString(2, hdct.getId());
+            ptm.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public static void main(String[] args) {
         HoaDonChoRepo hd = new HoaDonChoRepo();

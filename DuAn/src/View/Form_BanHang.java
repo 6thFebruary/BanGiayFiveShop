@@ -1860,7 +1860,7 @@ int rowGH = tb_giohang2.getSelectedRow();
             hdcRepo.updateDSSP(soLuongMoiTrongKho, idSanPham);
         }
 
-        loadtable();
+        loadtable(listspct);
 
     }//GEN-LAST:event_btn_them2ActionPerformed
 
