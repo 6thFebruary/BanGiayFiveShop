@@ -1746,7 +1746,7 @@ int rowGH = tb_giohang2.getSelectedRow();
     }//GEN-LAST:event_btn_timkiemsp2ActionPerformed
 
     private void btn_them2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_them2ActionPerformed
-        int rowHDC = tb_hoadon2.getSelectedRow();
+         int rowHDC = tb_hoadon2.getSelectedRow();
         int rowDSSP = tb_HdSp2.getSelectedRow();
         int sl = 0;
 
@@ -1801,22 +1801,36 @@ int rowGH = tb_giohang2.getSelectedRow();
         }
 
         if (rowGH != -1) {
-            // Sản phẩm đã tồn tại trong giỏ hàng, cập nhật số lượng
-            int soLuongHienTaiTrongGio = Integer.parseInt(tb_giohang2.getValueAt(rowGH, 2).toString());
-            int soLuongMoiTrongGio = soLuongHienTaiTrongGio + sl;
+            if (checkHDSP()) {
+                // Sản phẩm đã tồn tại trong giỏ hàng, cập nhật số lượng
+                int soLuongHienTaiTrongGio = Integer.parseInt(tb_giohang2.getValueAt(rowGH, 2).toString());
+                int soLuongMoiTrongGio = soLuongHienTaiTrongGio + sl;
+                int soLuongMoiTrongKho = soLuongTrongKho - sl;
 
-            // Kiểm tra số lượng mới trong giỏ hàng không vượt quá số lượng trong kho
-            if (soLuongMoiTrongGio > soLuongTrongKho) {
-                JOptionPane.showMessageDialog(this, "Số lượng trong cửa hàng không đủ để thêm vào giỏ hàng");
-                return;
+                // Kiểm tra số lượng mới trong giỏ hàng không vượt quá số lượng trong kho
+                if (soLuongMoiTrongGio > soLuongTrongKho) {
+                    JOptionPane.showMessageDialog(this, "Số lượng trong cửa hàng không đủ để thêm vào giỏ hàng");
+                    return;
+                }
+
+                String maHD = tb_hoadon2.getValueAt(rowHDC, 0).toString();
+                String idHD = hdRepo.getIdHoaDon(maHD);
+                String idHDCT = hdcRepo.getIdHDCTbyHD(idHD);
+
+                HoaDonChiTiet hdct = new HoaDonChiTiet();
+                hdct.setSoLuong(soLuongMoiTrongGio);
+                hdct.setId(idHDCT);
+
+                hdcRepo.updateSoLuongHDCT(hdct);
+                fillTableGioHang();
+                hdcRepo.updateDSSP(soLuongMoiTrongKho, idSanPham);
+
+                // Cập nhật số lượng trong giỏ hàng
+                gioHangModel.setValueAt(soLuongMoiTrongGio, rowGH, 2);
             }
-
-            // Cập nhật số lượng trong giỏ hàng
-            gioHangModel.setValueAt(soLuongMoiTrongGio, rowGH, 2);
-
         } else {
             // Thêm sản phẩm mới vào giỏ hàng
-            Object[] newRow = {idSanPham, tenSanPham, sl, chatLieu, mauSac, hang, size, thanhTien};
+            Object[] newRow = {idSanPham, tenSanPham, sl, chatLieu, mauSac, hang, size, donGia};
             gioHangModel.addRow(newRow);
 
             // Hiển thị thông báo thông tin sản phẩm vừa thêm vào giỏ hàng
@@ -1826,22 +1840,27 @@ int rowGH = tb_giohang2.getSelectedRow();
                     + "Số lượng: " + sl + "\n"
                     + "Đơn giá: " + donGia + " VND\n"
                     + "Thành tiền: " + thanhTien + " VND";
-            JOptionPane.showMessageDialog(this, message, "Thông tin sản phẩm đã thêm giỏ Hàng", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, message, "Thông tin sản phẩm đã thêm giỏ hàng", JOptionPane.INFORMATION_MESSAGE);
+
+            // Cập nhật số lượng sản phẩm trong kho và giỏ hàng
+            int soLuongMoiTrongKho = soLuongTrongKho - sl;
+            tb_HdSp2.setValueAt(soLuongMoiTrongKho, rowDSSP, 2); // Cập nhật trực tiếp số lượng trong bảng sản phẩm
+
+            // Cập nhật cơ sở dữ liệu
+            HoaDonChiTiet hdct = new HoaDonChiTiet();
+            hdct.setIdHD(hdRepo.getIdHoaDon(tb_hoadon2.getValueAt(rowHDC, 0).toString()));
+            hdct.setIdCTG(idSanPham);
+            hdct.setSoLuong(sl);
+            hdct.setDonGia(thanhTien);
+            hdct.setNgayTao(new java.util.Date());
+            hdct.setTrangThai(0);
+
+            hdcRepo.addHoaDonChiTiet(hdct);
+            fillTableGioHang();
+            hdcRepo.updateDSSP(soLuongMoiTrongKho, idSanPham);
         }
 
-        // Cập nhật số lượng sản phẩm trong kho và giỏ hàng
-        int soLuongMoiTrongKho = soLuongTrongKho - sl;
-        tb_HdSp2.setValueAt(soLuongMoiTrongKho, rowDSSP, 2); // Cập nhật trực tiếp số lượng trong bảng sản phẩm
-
-        // Cập nhật cơ sở dữ liệu
-        HoaDonChiTiet hdct = new HoaDonChiTiet();
-        hdct.setIdHD(hdRepo.getIdHoaDon(tb_hoadon2.getValueAt(rowHDC, 0).toString()));
-        hdct.setIdCTG(idSanPham);
-        hdct.setDonGia(donGia);
-        hdct.setSoLuong(sl);
-
-        hdcRepo.addHoaDonChiTiet(hdct);
-        hdcRepo.updateDSSP(soLuongMoiTrongKho, idSanPham);
+        loadtable();
 
     }//GEN-LAST:event_btn_them2ActionPerformed
 
