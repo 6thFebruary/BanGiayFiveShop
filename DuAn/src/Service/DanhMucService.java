@@ -16,4 +16,24 @@ public class DanhMucService implements DanhMucImpl{
     public ArrayList<DanhMuc> getAllDanhMuc() {
         return danhmucRepository.getAllDanhMuc();
          }
+
+    @Override
+    public boolean insert(DanhMuc dm) {
+        return danhmucRepository.insertDanhMuc(dm);
+    }
+
+    @Override
+    public boolean update(DanhMuc dm) {
+        return danhmucRepository.updateDanhMuc(dm);
+    }
+
+    @Override
+    public DanhMuc getIDByName(String danhMuc) {
+        return danhmucRepository.getDanhMucByID(danhMuc);
+    }
+
+    @Override
+    public void updateTrangThai(String idDanhMuc) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

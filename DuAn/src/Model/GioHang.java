@@ -4,11 +4,14 @@
  */
 package Model;
 
+import java.util.Date;
+
 /**
  *
  * @author ADMIN
  */
 public class GioHang {
+
     private String idCTSP;
     private String tenSanPham;
     private int soLuong;
@@ -106,9 +109,4 @@ public class GioHang {
         this.trangThai = trangThai;
     }
 
-  
-
-  
-    
-    
 }

@@ -6,31 +6,35 @@ package Model;
 
 /**
  *
- * @author Windows
+ * @author ADMIN
  */
 public class SanPham {
-
-    private Integer id;
+    
+    private Integer idSanPham;
+    
     private String ma;
+    
     private String ten;
-    private int trangThai;
+    
+    private Integer trangThai;
 
     public SanPham() {
     }
 
-    public SanPham(int id, String ma, String ten, int trangThai) {
-        this.id = id;
+
+    public SanPham(Integer idSanPham, String ma, String ten, Integer trangThai) {
+        this.idSanPham = idSanPham;
         this.ma = ma;
         this.ten = ten;
         this.trangThai = trangThai;
     }
 
-    public int getId() {
-        return id;
+    public Integer getIdSanPham() {
+        return idSanPham;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIdSanPham(Integer idSanPham) {
+        this.idSanPham = idSanPham;
     }
 
     public String getMa() {
@@ -49,12 +53,20 @@ public class SanPham {
         this.ten = ten;
     }
 
-    public int getTrangThai() {
+    public Integer getTrangThai() {
         return trangThai;
     }
 
-    public void setTrangThai(int trangThai) {
+    public void setTrangThai(Integer trangThai) {
         this.trangThai = trangThai;
     }
 
+    @Override
+    public String toString() {
+        return ten;
+    }
+
+  
+    
+    
 }

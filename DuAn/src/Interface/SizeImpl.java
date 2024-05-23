@@ -13,4 +13,11 @@ import java.util.ArrayList;
  */
 public interface SizeImpl {
     public ArrayList<SIZE>getAllSize();
+    public boolean insert(SIZE sz);
+    
+    public boolean update(SIZE sz);
+    
+    public SIZE getIDByName(String size);
+    
+    public void updateTrangThai(String idSize);
 }

@@ -19,10 +19,10 @@ public class ChucVuRepository {
     public ChucVu getDanhMucByID(String id) {
    String sql = "SELECT * FROM CHUCVU WHERE Id=?";
          try ( Connection con = DBConnext.getConnection();  PreparedStatement ps = con.prepareStatement(sql)){
-              ps.setObject(0, id);
+              ps.setObject(1, id);
                ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-               return new ChucVu(rs.getInt(0), rs.getString(2), rs.getString(3));
+               return new ChucVu(rs.getInt(1), rs.getString(2), rs.getString(3));
             }
         } catch (SQLException ex) {
 

@@ -12,5 +12,16 @@ import java.util.ArrayList;
  * @author ADMIN
  */
 public interface SanPhamImpl {
+
     public ArrayList<SanPham> getAllSanPhamService();
+
+    public Integer insert(SanPham sp);
+
+    public boolean update(SanPham sp);
+
+    public SanPham getSanPhamMa(String ma);
+
+    public SanPham getIDByName(String sanPham);
+
+    public void updateTrangThai(String idSanPham);
 }

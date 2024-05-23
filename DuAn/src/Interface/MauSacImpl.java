@@ -12,5 +12,14 @@ import java.util.ArrayList;
  * @author ADMIN
  */
 public interface MauSacImpl {
-    public ArrayList<MauSac>getAllMauSac();
+
+    public ArrayList<MauSac> getAllMauSac();
+
+    public boolean insert(MauSac ms);
+
+    public boolean update(MauSac ms);
+
+    public MauSac getIDByName(String mauSac);
+
+    public void updateTrangThai(String idMauSac);
 }

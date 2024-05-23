@@ -4,13 +4,157 @@
  */
 package View;
 
+import Interface.KhachHangServiceIplm;
+import Model.KhachHang;
+import Repo.HoaDonChoRepo;
+import Repo.KhachHangRepository;
+import Service.KhachHangService;
+import Utilities.DBConnext;
+import View_Model.KhachHangModel;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author asus
  */
 public class Form_KhachHangBanHang extends javax.swing.JFrame {
 
+    private KhachHangService khs = new KhachHangService();
+    private KhachHangRepository khr = new KhachHangRepository();
+    public static HoaDonChoRepo hoaDonChoRepository = new HoaDonChoRepo();
+    public static KhachHang khach;
+
+    JTable tb_giohang;
+    JTable tb_hoadon2;
+    KhachHangModel khm;
+    Form_BanHang banHangfr;
+
+    long count, soTrang, trang = 1;
+
+    private KhachHangServiceIplm service = new KhachHangService();
+    ArrayList<KhachHang> listKh = new ArrayList<>();
+
     @SuppressWarnings("unchecked")
+    public Form_KhachHangBanHang(Form_BanHang banHangfr, JTable tb_hoadon2) {
+        initComponents();
+
+        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        setSize(1005, 530);
+        setLocationRelativeTo(null);
+        titleTable();
+        countDB();
+        if (count % 5 == 0) {
+            soTrang = count / 5;
+        } else {
+            soTrang = count / 5 + 1;
+        }
+        loadData(1);
+        lbsoTrang.setText("1/" + soTrang);
+        lbtrang.setText("1");
+        this.tb_hoadon2 = tb_hoadon2;
+        this.banHangfr = banHangfr;
+    }
+
+    public void titleTable() {
+        khm = new KhachHangModel();
+        tblKhachHang.setModel(khm);
+        tblKhachHang.setShowHorizontalLines(true);
+        tblKhachHang.setShowVerticalLines(true);
+    }
+
+    public void countDB() {
+        try {
+            String query = "Select COUNT(*) from KHACHHANG";
+            Connection cn = DBConnext.getConnection();
+            Statement st = cn.createStatement();
+            ResultSet rs = st.executeQuery(query);
+            while (rs.next()) {
+                count = rs.getLong(1);
+            }
+            rs.close();
+            st.close();
+            cn.close();
+        } catch (Exception ex) {
+            Logger.getLogger(Form_KhachHangBanHang.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void loadData(long trang) {
+        titleTable();
+        khm.getDataVector().removeAllElements();
+        try {
+            String query = "Select top 5 * from KHACHHANG where Ten not in ("
+                    + "Select top " + (trang * 5 - 5) + " Ten from KHACHHANG)";
+            Connection cn = DBConnext.getConnection();
+            Statement st = cn.createStatement();
+            ResultSet rs = st.executeQuery(query);
+            while (rs.next()) {
+                Vector v = new Vector();
+
+                String Ma = rs.getString(2);
+                String Ten = rs.getString(3);
+                Date ngaySinh = rs.getDate(4);
+                Integer gioiTinh = rs.getInt(5);
+
+                String gt;
+                if (gioiTinh == 1) {
+                    gt = "Nam";
+                } else {
+                    gt = "Nữ";
+                }
+                String sdt = rs.getString(6);
+                String email = rs.getString(7);
+                String diaChi = rs.getString(8);
+                Integer trangThai = rs.getInt(10);
+                String tt;
+
+                if (trangThai == 1) {
+                    tt = "HD";
+                } else {
+                    tt = "Nhd";
+                }
+                v.add(Ma);
+                v.add(Ten);
+                v.add(ngaySinh);
+                v.add(gt);
+                v.add(sdt);
+                v.add(email);
+                v.add(diaChi);
+                v.add(tt);
+                khm.addRow(v);
+            }
+            rs.close();
+            st.close();
+            cn.close();
+        } catch (Exception ex) {
+            Logger.getLogger(Form_KhachHangBanHang.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public boolean checkSDT() {
+        if (txtSDT.getText().matches("[0,+84][\\d]{9}")) {
+            return true;
+
+        }
+        JOptionPane.showMessageDialog(this, "Sai định dạng số điện thoại!");
+        return false;
+    }
+
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -93,6 +237,11 @@ public class Form_KhachHangBanHang extends javax.swing.JFrame {
         txtTimKiem.addCaretListener(new javax.swing.event.CaretListener() {
             public void caretUpdate(javax.swing.event.CaretEvent evt) {
                 txtTimKiemCaretUpdate(evt);
+            }
+        });
+        txtTimKiem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtTimKiemActionPerformed(evt);
             }
         });
 
@@ -242,7 +391,7 @@ public class Form_KhachHangBanHang extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(pnlCapNhat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
@@ -255,48 +404,210 @@ public class Form_KhachHangBanHang extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtTenKHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTenKHActionPerformed
-       // TODO add your handling code here:
+        // TODO add your handling code here:
     }//GEN-LAST:event_txtTenKHActionPerformed
 
     private void tblKhachHangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblKhachHangMouseClicked
- 
+        int index = tblKhachHang.getSelectedRow();
+        if (index < 0) {
+            return;
+        }
+        txtTenKH.setText(tblKhachHang.getValueAt(index, 1).toString());
+        txtSDT.setText(tblKhachHang.getValueAt(index, 4).toString());
+
     }//GEN-LAST:event_tblKhachHangMouseClicked
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
-     
 
+        if (txtTenKH.getText().trim().equals("")
+                || txtSDT.getText().trim().equals("")) {
+
+            JOptionPane.showMessageDialog(this, "Vui long khong de trong");
+            return;
+        }
+
+        String ten = txtTenKH.getText();
+        String sdt = txtSDT.getText();
+
+        KhachHang khachHang = new KhachHang(ten, sdt);
+
+        hoaDonChoRepository.addKhachHang(khachHang);
+        JOptionPane.showMessageDialog(this, "Thêm Thành  Công");
+        txtTenKH.setText("");
+        txtSDT.setText("");
+        loadData(1);
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void btnNhoMaxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNhoMaxActionPerformed
-     
+        trang = 1;
+        loadData(trang);
+        lbtrang.setText("1");
+        lbsoTrang.setText("1/" + soTrang);
     }//GEN-LAST:event_btnNhoMaxActionPerformed
 
     private void btnNhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNhoActionPerformed
-      
+        if (trang > 1) {
+            trang--;
+            loadData(trang);
+            lbtrang.setText("" + trang);
+            lbsoTrang.setText(trang + "/" + soTrang);
+        }
     }//GEN-LAST:event_btnNhoActionPerformed
 
     private void btnLonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLonActionPerformed
-      
+        if (trang < soTrang) {
+            trang++;
+            loadData(trang);
+            lbtrang.setText("" + trang);
+            lbsoTrang.setText(trang + "/" + soTrang);
+        }
     }//GEN-LAST:event_btnLonActionPerformed
 
     private void btnLonMaxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLonMaxActionPerformed
-    
+        trang = soTrang;
+        loadData(trang);
+        lbtrang.setText("" + soTrang);
+        lbsoTrang.setText(soTrang + "/" + soTrang);
     }//GEN-LAST:event_btnLonMaxActionPerformed
 
     private void txtTimKiemCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_txtTimKiemCaretUpdate
-      
+        List<KhachHang> listk = new ArrayList<>();
+        for (KhachHang k : listKh) {
+            if (k.getTen().toLowerCase().contains(txtTimKiem.getText().toLowerCase())
+                    || k.getSdt().toLowerCase().contains(txtTimKiem.getText().toLowerCase())) {
+                listk.add(k);
+
+            }
+        }
+        loadData(1);
     }//GEN-LAST:event_txtTimKiemCaretUpdate
 
     private void btn_chonmuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_chonmuaActionPerformed
-      
 
+        // TODO add your handling code here:
+        int row = tblKhachHang.getSelectedRow();
+        if (row < 0) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn 1 khách hàng !");
+
+        } else {
+            String makH = tblKhachHang.getValueAt(row, 0).toString();
+            String idKH = hoaDonChoRepository.getIDKHbyMa(makH);
+            int rowHD = tb_hoadon2.getSelectedRow();
+            if (rowHD < 0) {
+                JOptionPane.showMessageDialog(this, "Vui lòng chọn 1 hóa đơn để thêm khách hàng !");
+
+            } else {
+                String idHD = hoaDonChoRepository.getIdHoaDonByMa(tb_hoadon2.getValueAt(rowHD, 0).toString());
+                System.out.println("id hd" + idHD);
+                int cf = JOptionPane.showConfirmDialog(this, "Bạn có muốn thêm khách hàng '" + tblKhachHang.getValueAt(row, 1) + "' vào hóa đơn không ???", "Message", JOptionPane.YES_NO_CANCEL_OPTION);
+                if (cf == JOptionPane.NO_OPTION) {
+                    return;
+                }
+                hoaDonChoRepository.updateKHinHoaDon(idHD, idKH);
+                JOptionPane.showMessageDialog(this, "Cập nhật thông tin hóa đơn thành công !");
+                banHangfr.fillTableHoaDonCho();
+
+                // fill thông tin khách hàng lên table 
+                KhachHang khach = hoaDonChoRepository.getKhachHangById(idKH);
+                if (khach != null) {
+                    banHangfr.loadChonKH(khach.getTen(), khach.getSdt());
+                    banHangfr.fillTableHoaDonCho();
+                }
+                // giu chon khach hang tre hoa don 
+                banHangfr.selectedRowInBanHang = rowHD;
+                tb_hoadon2.setRowSelectionInterval(banHangfr.selectedRowInBanHang, banHangfr.selectedRowInBanHang);
+
+                this.dispose();
+            }
+        }
     }//GEN-LAST:event_btn_chonmuaActionPerformed
 
     private void btnTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiemActionPerformed
+        String timKiemText = txtTimKiem.getText().toLowerCase();
+        DefaultTableModel model = (DefaultTableModel) tblKhachHang.getModel();
 
-       
+        model.setRowCount(0);
+
+        try {
+            // Cập nhật dữ liệu từ nguồn
+            khs.refreshData();
+
+            // Tìm kiếm khách hàng với text tìm kiếm
+            ArrayList<KhachHang> kh;
+
+            // Kiểm tra nếu độ dài của chuỗi tìm kiếm là 2 và bắt đầu bằng "10"
+            if (timKiemText.length() == 2 && timKiemText.startsWith("10")) {
+                kh = khs.TimKiem("", timKiemText);
+            } else {
+                kh = khs.TimKiem(timKiemText, timKiemText);
+            }
+
+            if (kh != null) {
+                for (KhachHang k : kh) {
+                    Object[] row = new Object[]{
+                        k.getMa(),
+                        k.getTen(),
+                        k.getNgaySinh(),
+                        k.getGioiTinh() == 1 ? "Nam" : "Nữ",
+                        k.getSdt(),
+                        k.getEmail(),
+                        k.getDiaChi(),};
+                    model.addRow(row);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Xử lý lỗi một cách phù hợp, ví dụ: hiển thị thông báo lỗi cho người dùng
+        }
+
     }//GEN-LAST:event_btnTimKiemActionPerformed
 
+    private void txtTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTimKiemActionPerformed
+        String timKiemText = txtTimKiem.getText().toLowerCase();
+        DefaultTableModel model = (DefaultTableModel) tblKhachHang.getModel();
+
+        model.setRowCount(0);
+
+        try {
+            // Cập nhật dữ liệu từ nguồn
+            khs.refreshData();
+
+            // Kiểm tra nếu độ dài của chuỗi tìm kiếm là 2 và bắt đầu bằng "10"
+            // hoặc nếu độ dài là 10 (đủ số điện thoại)
+            if (timKiemText.length() == 2 && timKiemText.startsWith("10")) {
+                // Tìm kiếm theo mã
+                ArrayList<KhachHang> kh = khs.TimKiem("", timKiemText);
+                addToTableModel(model, kh);
+            } else if (timKiemText.length() == 10 && timKiemText.matches("\\d+")) {
+                // Tìm kiếm theo số điện thoại
+                ArrayList<KhachHang> kh = khs.TimKiemTheoSDT(timKiemText);
+                addToTableModel(model, kh);
+            } else {
+                // Tìm kiếm theo thông tin khác
+                ArrayList<KhachHang> kh = khs.TimKiem(timKiemText, timKiemText);
+                addToTableModel(model, kh);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Xử lý lỗi một cách phù hợp, ví dụ: hiển thị thông báo lỗi cho người dùng
+        }
+    }//GEN-LAST:event_txtTimKiemActionPerformed
+private void addToTableModel(DefaultTableModel model, ArrayList<KhachHang> kh) {
+    if (kh != null) {
+        for (KhachHang k : kh) {
+            Object[] row = new Object[]{
+                k.getMa(),
+                k.getTen(),
+                k.getNgaySinh(),
+                k.getGioiTinh() == 1 ? "Nam" : "Nữ",
+                k.getSdt(),
+                k.getEmail(),
+                k.getDiaChi(),
+            };
+            model.addRow(row);
+        }
+    }
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLon;

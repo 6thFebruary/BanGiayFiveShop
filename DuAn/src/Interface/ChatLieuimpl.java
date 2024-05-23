@@ -12,5 +12,14 @@ import java.util.ArrayList;
  * @author ADMIN
  */
 public interface ChatLieuimpl {
-    public ArrayList<ChatLieu>getALlChatLieus();
+
+    public ArrayList<ChatLieu> getALlChatLieus();
+
+    public boolean insert(ChatLieu cl);
+
+    public boolean update(ChatLieu cl);
+
+    public ChatLieu getIDByName(String chatLieu);
+
+    public void updateTrangThai(String idChatLieu);
 }

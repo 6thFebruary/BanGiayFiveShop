@@ -12,5 +12,14 @@ import java.util.ArrayList;
  * @author ADMIN
  */
 public interface DeImpl {
-    ArrayList<De>getAllDe();
+
+    ArrayList<De> getAllDe();
+
+    public boolean insert(De cl);
+
+    public boolean update(De cl);
+
+    public De getIDByName(String de);
+
+    public void updateTrangThai(String idDe);
 }

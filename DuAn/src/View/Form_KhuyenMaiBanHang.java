@@ -4,11 +4,56 @@
  */
 package View;
 
+import Model.KhuyenMai;
+import Repo.HoaDonChoRepo;
+import Service.KhuyenMaiService;
+import java.util.ArrayList;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 public class Form_KhuyenMaiBanHang extends javax.swing.JFrame {
 
-    public Form_KhuyenMaiBanHang() {
+    public static HoaDonChoRepo hoaDonChoRepository = new HoaDonChoRepo();
+    public static KhuyenMai km;
+    JTable tb_giohang2;
+    JTable tb_hoadon2;
+    KhuyenMai khm;
+    Form_BanHang banHangfr;
+    KhuyenMaiService kms = new KhuyenMaiService();
+    ArrayList<KhuyenMai> listKM = new ArrayList<>();
+
+    public Form_KhuyenMaiBanHang(Form_BanHang banHangfr, JTable tb_hoadon) {
         initComponents();
+
+        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        setSize(1005, 530);
+        setLocationRelativeTo(null);
+        listKM = kms.getAll();
+        this.tb_hoadon2 = tb_hoadon;
+        this.banHangfr = banHangfr;
+        loadTable();
+    }
+
+    public void loadTable() {
+        DefaultTableModel model = (DefaultTableModel) tblKhuyenMai.getModel();
+        model.setRowCount(0);
+        for (KhuyenMai km : listKM) {
+            Object[] data = new Object[]{
+                km.getMa(),
+                km.getTen(),
+                km.getPhanTramGiam(),
+                km.getGiaGiam(),
+                km.getSoLuong(),
+                km.getNgayBatDau(),
+                km.getNgayKetThuc(),
+                km.getHinhThucGiam() == 1 ? "Giảm %" : "Giảm tiền",
+                km.getTrangThai() == 1 ? "Đang hoạt động" : "Ngừng hoạt động",
+                km.getMoTa()
+            };
+            model.addRow(data);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -127,9 +172,43 @@ public class Form_KhuyenMaiBanHang extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_chonmuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_chonmuaActionPerformed
+        int row = tblKhuyenMai.getSelectedRow();
+        if (row < 0) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn 1 voucher !");
 
-        
+        } else {
+            String maKM = tblKhuyenMai.getValueAt(row, 0).toString();
+            String idKM = hoaDonChoRepository.getIdKMbyMa(maKM);
+            int rowHD = tb_hoadon2.getSelectedRow();
+            if (rowHD < 0) {
+                JOptionPane.showMessageDialog(this, "Vui lòng chọn 1 hóa đơn để thêm voucher !");
 
+            } else {
+                String idHD = hoaDonChoRepository.getIdHoaDonByMa(tb_hoadon2.getValueAt(rowHD, 0).toString());
+                System.out.println("id hd" + idHD);
+                int cf = JOptionPane.showConfirmDialog(this, "Bạn có muốn thêm voucher '" + tblKhuyenMai.getValueAt(row, 0) + "' vào hóa đơn không ???", "Message", JOptionPane.YES_NO_CANCEL_OPTION);
+                if (cf == JOptionPane.NO_OPTION) {
+                    return;
+                }
+                hoaDonChoRepository.updateKhuyenMaibyIdHoaDon(idHD, idKM);
+                System.out.println("id km:" + idKM);
+                JOptionPane.showMessageDialog(this, "Cập nhật thông tin hóa đơn thành công !");
+                banHangfr.fillTableHoaDonCho();
+
+                // fill thông tin khuyen mai lên table 
+                KhuyenMai km = hoaDonChoRepository.getKhuyenMaibyMa(maKM);
+                if (km != null) {
+                    banHangfr.loadChonKhuyenMai(rowHD, km.getMa(), km.getPhanTramGiam(), km.getGiaGiam());
+                    banHangfr.fillTableHoaDonCho();
+                    System.out.println("gia giam:" + km.getGiaGiam());
+
+                }
+                banHangfr.selectedRowInBanHang = rowHD;
+                tb_hoadon2.setRowSelectionInterval(banHangfr.selectedRowInBanHang, banHangfr.selectedRowInBanHang);
+
+                this.dispose();
+            }
+        }
     }//GEN-LAST:event_btn_chonmuaActionPerformed
 
     private void tblKhuyenMaiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblKhuyenMaiMouseClicked
@@ -141,7 +220,7 @@ public class Form_KhuyenMaiBanHang extends javax.swing.JFrame {
     }//GEN-LAST:event_txtTimKiemKMKeyReleased
 
     private void btnTimKiemKMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiemKMActionPerformed
-      
+
     }//GEN-LAST:event_btnTimKiemKMActionPerformed
 
 
